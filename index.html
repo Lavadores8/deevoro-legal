@@ -3,40 +3,84 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Información legal · Deevoro</title>
-<meta name="description" content="Términos y Condiciones y Política de Privacidad de Deevoro.">
+<title>Deevoro · Pide en tu barrio y tu club recibe el 10%</title>
+<meta name="description" content="Deevoro es una aplicación móvil para pedir comida a bares y restaurantes de Vigo, a domicilio o para recoger. El 10% de cada pedido va al club o asociación que elijas, sin coste extra.">
 </head>
 <body>
 <style>
-  .dv-legal { --tinta:#1a1a1a; --suave:#5a5a5a; --linea:#e6e6e6; --acento:#e22d28; --fondo:#ffffff;
-    background:var(--fondo); color:var(--tinta); max-width:46rem; margin:0 auto; padding:3.5rem 1.25rem 4rem;
+  .dv { --tinta:#161616; --suave:#5c5654; --linea:#e8e4e3; --acento:#e22d28; --fondo:#fffdfc; --caja:#ffffff;
+    background:var(--fondo); color:var(--tinta); margin:0 auto; max-width:52rem; padding:3rem 1.25rem 4rem;
     font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-    font-size:1rem; line-height:1.65; }
-  .dv-legal .dv-marca { font-weight:800; letter-spacing:.02em; color:var(--acento); font-size:.82rem;
-    text-transform:uppercase; margin:0 0 .4rem; }
-  .dv-legal h1 { font-size:1.85rem; margin:0 0 1.75rem; font-weight:800; }
-  .dv-legal ul { list-style:none; padding:0; margin:0 0 2.5rem; display:grid; gap:.75rem; }
-  .dv-legal li a { display:block; padding:1.1rem 1.25rem; border:1px solid var(--linea); border-radius:.6rem;
-    text-decoration:none; color:var(--tinta); font-weight:700; }
-  .dv-legal li a span { display:block; font-weight:400; color:var(--suave); font-size:.9rem; margin-top:.15rem; }
-  .dv-legal li a:hover { border-color:var(--acento); }
-  .dv-legal .dv-pie { padding-top:1.25rem; border-top:1px solid var(--linea); color:var(--suave); font-size:.85rem; }
-  .dv-legal .dv-pie p { margin:0 0 .3rem; }
-  .dv-legal a { color:var(--acento); }
+    font-size:1rem; line-height:1.65; -webkit-text-size-adjust:100%; }
+  .dv * { box-sizing:border-box; }
+  .dv .marca { font-weight:800; letter-spacing:.06em; color:var(--acento); font-size:.8rem;
+    text-transform:uppercase; margin:0 0 .75rem; }
+  .dv h1 { font-size:clamp(1.9rem,5.5vw,2.7rem); line-height:1.12; margin:0 0 1rem; font-weight:800;
+    letter-spacing:-.02em; text-wrap:balance; }
+  .dv .entrada { font-size:1.1rem; color:var(--suave); margin:0 0 2.5rem; max-width:34rem; }
+  .dv h2 { font-size:1.15rem; font-weight:800; margin:2.5rem 0 .9rem; letter-spacing:-.01em; }
+  .dv p { margin:0 0 .9rem; }
+  .dv .pasos { list-style:none; padding:0; margin:0; display:grid; gap:1rem; }
+  .dv .pasos li { background:var(--caja); border:1px solid var(--linea); border-radius:.7rem; padding:1.1rem 1.25rem; }
+  .dv .pasos b { display:block; margin-bottom:.15rem; }
+  .dv .pasos span.txt { color:var(--suave); font-size:.95rem; }
+  .dv .num { display:inline-block; min-width:1.6rem; height:1.6rem; line-height:1.6rem; text-align:center;
+    background:var(--acento); color:#fff; border-radius:50%; font-size:.85rem; font-weight:800; margin-right:.6rem; }
+  .dv .destacado { background:var(--caja); border:1px solid var(--linea); border-left:4px solid var(--acento);
+    border-radius:.5rem; padding:1.2rem 1.35rem; margin:1.5rem 0; }
+  .dv .destacado p:last-child { margin-bottom:0; }
+  .dv .enlaces { list-style:none; padding:0; margin:1rem 0 0; display:grid; gap:.5rem; }
+  .dv .pie { margin-top:3rem; padding-top:1.5rem; border-top:1px solid var(--linea);
+    color:var(--suave); font-size:.87rem; }
+  .dv .pie p { margin:0 0 .3rem; }
+  .dv a { color:var(--acento); }
   @media (prefers-color-scheme: dark) {
-    .dv-legal { --tinta:#f2f2f2; --suave:#a8a8a8; --linea:#333; --acento:#ff6b66; --fondo:#141414; }
+    .dv { --tinta:#f4f2f1; --suave:#a9a3a1; --linea:#332f2e; --acento:#ff6b66; --fondo:#131111; --caja:#1c1919; }
   }
 </style>
-<main class="dv-legal">
-  <p class="dv-marca">Deevoro</p>
-  <h1>Información legal</h1>
-  <ul>
-    <li><a href="./condiciones.html">Términos y Condiciones del Servicio
-      <span>Condiciones aplicables a quienes hacen pedidos · v2026-09-10-v7</span></a></li>
-    <li><a href="./privacidad.html">Política de Privacidad
-      <span>Qué datos tratamos, para qué y cómo ejercer tus derechos · v2026-09-10-v1</span></a></li>
+<main class="dv">
+  <p class="marca">Deevoro</p>
+  <h1>Pide en tu barrio y tu club se lleva el 10%</h1>
+  <p class="entrada">Deevoro es una aplicación móvil para pedir comida a bares y restaurantes
+    de Vigo, a domicilio o para recoger. Por cada pedido, el 10% del importe de la comida va
+    al club o asociación deportiva que tú elijas.</p>
+
+  <h2>Cómo funciona</h2>
+  <ul class="pasos">
+    <li><b><span class="num">1</span>Eliges tu club</b>
+      <span class="txt">Al crear la cuenta indicas a qué club o asociación quieres apoyar. Puedes cambiarlo cuando quieras.</span></li>
+    <li><b><span class="num">2</span>Pides como en cualquier otra app</b>
+      <span class="txt">Ves los locales que reparten en tu zona, montas el pedido y pagas con tarjeta. A domicilio o para recoger tú mismo.</span></li>
+    <li><b><span class="num">3</span>Tu club recibe su parte</b>
+      <span class="txt">El 10% de la comida se acumula para tu club y se le transfiere a su cuenta. Puedes ver cuánto llevas aportado.</span></li>
   </ul>
-  <div class="dv-pie">
+
+  <div class="destacado">
+    <p><strong>No te cuesta más caro.</strong> Esa aportación no es un recargo que pagues tú:
+      sale de la comisión que la plataforma cobra al comercio. El precio que ves es el que pagas.</p>
+  </div>
+
+  <h2>Qué necesitas saber antes de pedir</h2>
+  <p>Los precios de los menús incluyen IVA. Antes de confirmar verás siempre el desglose completo:
+    la comida, los gastos de gestión, el envío si lo hay y, en pedidos a domicilio de menos de 12 €,
+    un recargo por pedido pequeño. Nada aparece después de pagar.</p>
+  <p>Los pagos se procesan a través de Stripe Payments Europe, Ltd. Nosotros no vemos ni guardamos
+    los datos de tu tarjeta en ningún momento.</p>
+  <p>El servicio está limitado a mayores de 18 años, porque las cartas pueden incluir bebidas alcohólicas.</p>
+
+  <h2>¿Tienes un bar, un restaurante o un club?</h2>
+  <p>Los comercios se dan de alta desde la propia aplicación y cobran sus pedidos directamente
+    en su cuenta. Los clubes y asociaciones reciben las aportaciones de sus socios y pueden
+    organizar sorteos entre ellos.</p>
+  <p>Si quieres información, escríbenos a <a href="mailto:soporte@deevoro.com">soporte@deevoro.com</a>.</p>
+
+  <h2>Información legal</h2>
+  <ul class="enlaces">
+    <li><a href="./condiciones.html">Términos y Condiciones del Servicio</a> · v2026-09-10-v7</li>
+    <li><a href="./privacidad.html">Política de Privacidad</a> · v2026-09-10-v1</li>
+  </ul>
+
+  <div class="pie">
     <p><strong>Plataforma de apoyo al deporte Bade S.L.</strong> (Deevoro) · NIF B93928877</p>
     <p>Calle Burgos 44, 2 — 36205 Vigo (Pontevedra), España</p>
     <p>Contacto: <a href="mailto:soporte@deevoro.com">soporte@deevoro.com</a></p>
