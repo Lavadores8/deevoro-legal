@@ -19,3 +19,12 @@ condiciones llegaron a prometer unos gastos de gestión distintos de los que la 
 cobraba, porque el texto vivía en dos sitios.
 
 Para cambiar algo: se toca `lib/textosLegales.js`, se regenera y se copia aquí.
+
+## El fichero CNAME no se borra
+
+En la raíz hay un fichero `CNAME` con `legal.deevoro.com`. Es lo que ata el dominio
+propio a estas páginas. Si al copiar páginas nuevas te llevas por delante ese
+fichero, el dominio deja de funcionar y las URLs que Google tiene guardadas dejan
+de responder, sin ningún aviso.
+
+Al regenerar: copia solo los `.html`.
