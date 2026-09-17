@@ -86,7 +86,165 @@
     <p><strong>Plataforma de apoyo al deporte Bade S.L.</strong> (Deevoro) · NIF B93928877</p>
     <p>Calle Burgos 44, 2 — 36205 Vigo (Pontevedra), España</p>
     <p>Contacto: <a href="mailto:soporte@deevoro.com">soporte@deevoro.com</a></p>
+    <p><button type="button" class="ck-enlace" data-ck="preferencias">Preferencias de cookies</button></p>
   </div>
 </main>
+
+<style>
+  .ck-tapa { position:fixed; inset:0; background:rgba(0,0,0,.45); display:none; z-index:60; }
+  .ck-tapa[data-ver] { display:block; }
+  .ck { position:fixed; left:0; right:0; bottom:0; z-index:70; background:var(--surface,#fff);
+    border-top:1px solid var(--linea,#e6e1e0); box-shadow:0 -6px 24px -12px rgba(0,0,0,.25);
+    padding:20px 18px; display:none;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; }
+  .ck[data-ver] { display:block; }
+  .ck-caja { max-width:46rem; margin:0 auto; }
+  .ck-t { font-weight:800; font-size:1rem; margin:0 0 .4rem; color:var(--tinta,#161616); }
+  .ck-p { margin:0 0 1rem; font-size:.92rem; line-height:1.55; color:var(--suave,#5c5654); }
+  .ck-botones { display:flex; flex-wrap:wrap; gap:.6rem; }
+  /* Los tres, del mismo tamaño y peso. Que rechazar cueste lo mismo que aceptar
+     no es cortesia: es lo que exige la AEPD y lo que casi nadie hace. */
+  .ck-b { flex:1 1 10rem; min-height:44px; padding:.7rem 1rem; border-radius:.55rem; font-size:.92rem;
+    font-weight:700; cursor:pointer; border:1px solid var(--linea,#e6e1e0);
+    background:var(--fondo,#fafafa); color:var(--tinta,#161616); font-family:inherit; }
+  .ck-b:hover { border-color:var(--acento,#e22d28); }
+  .ck-b.ck-si { background:var(--acento,#e22d28); border-color:var(--acento,#e22d28); color:#fff; }
+  .ck-panel { position:fixed; z-index:80; left:50%; top:50%; transform:translate(-50%,-50%);
+    width:min(30rem,calc(100vw - 2rem)); max-height:85vh; overflow:auto; display:none;
+    background:var(--surface,#fff); border:1px solid var(--linea,#e6e1e0); border-radius:.8rem;
+    padding:22px; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; }
+  .ck-panel[data-ver] { display:block; }
+  .ck-cat { border:1px solid var(--linea,#e6e1e0); border-radius:.55rem; padding:.9rem 1rem; margin:0 0 .7rem; }
+  .ck-cab { display:flex; align-items:center; justify-content:space-between; gap:1rem; }
+  .ck-cab b { font-size:.95rem; color:var(--tinta,#161616); }
+  .ck-cat p { margin:.35rem 0 0; font-size:.86rem; line-height:1.5; color:var(--suave,#5c5654); }
+  .ck-fija { font-size:.78rem; color:var(--suave,#5c5654); white-space:nowrap; }
+  .ck-enlace { background:none; border:0; padding:0; font:inherit; color:var(--acento,#e22d28);
+    text-decoration:underline; cursor:pointer; }
+  @media (prefers-reduced-motion: no-preference) {
+    .ck[data-ver] { animation:ck-sube .22s ease-out; }
+    @keyframes ck-sube { from { transform:translateY(100%); } to { transform:none; } }
+  }
+</style>
+
+<div class="ck-tapa" id="ck-tapa"></div>
+
+<div class="ck" id="ck-banner" role="dialog" aria-live="polite" aria-labelledby="ck-titulo">
+  <div class="ck-caja">
+    <p class="ck-t" id="ck-titulo">Cookies</p>
+    <p class="ck-p">
+      Usamos lo imprescindible para que la web funcione y para recordar lo que decidas aquí.
+      Si algún día medimos visitas, te lo preguntaremos antes. Tú eliges, y puedes cambiar de
+      opinión cuando quieras.
+      <a href="./privacidad.html#cookies">Más información</a>.
+    </p>
+    <div class="ck-botones">
+      <button class="ck-b" type="button" data-ck="rechazar">Solo las necesarias</button>
+      <button class="ck-b" type="button" data-ck="abrir">Prefiero elegir</button>
+      <button class="ck-b ck-si" type="button" data-ck="aceptar">Aceptar todas</button>
+    </div>
+  </div>
+</div>
+
+<div class="ck-panel" id="ck-panel" role="dialog" aria-modal="true" aria-labelledby="ck-panel-t">
+  <p class="ck-t" id="ck-panel-t">Elige qué permites</p>
+  <div class="ck-cat">
+    <div class="ck-cab"><b>Necesarias</b><span class="ck-fija">Siempre activas</span></div>
+    <p>Hacen que la web funcione: que puedas moverte por ella, que sea segura y que recordemos
+       lo que has decidido aquí. Sin estas no hay web, así que no se pueden apagar.</p>
+  </div>
+  <div class="ck-cat">
+    <div class="ck-cab">
+      <b>Analíticas</b>
+      <label class="ck-fija"><input type="checkbox" id="ck-analiticas"> Permitir</label>
+    </div>
+    <p>Nos dirían cuánta gente nos visita y qué mira, todo junto y sin nombres. Hoy no usamos
+       ninguna; si las activamos, tu decisión ya estará tomada y se respetará.</p>
+  </div>
+  <div class="ck-botones" style="margin-top:1rem">
+    <button class="ck-b" type="button" data-ck="rechazar">Rechazar todas</button>
+    <button class="ck-b ck-si" type="button" data-ck="guardar">Guardar mi elección</button>
+  </div>
+</div>
+
+<script>
+(function () {
+  var CLAVE = 'deevoro.cookies.v1';
+  var banner = document.getElementById('ck-banner');
+  var panel  = document.getElementById('ck-panel');
+  var tapa   = document.getElementById('ck-tapa');
+  var casilla = document.getElementById('ck-analiticas');
+
+  // localStorage puede lanzar: ventana privada, cookies de sitio bloqueadas...
+  // Si no se puede leer NI escribir, se enseña el aviso y no se carga nada: que
+  // falle hacia el lado de no rastrear, nunca hacia el contrario.
+  function leer() {
+    try { return JSON.parse(localStorage.getItem(CLAVE) || 'null'); } catch (e) { return null; }
+  }
+  function guardar(analiticas) {
+    try {
+      localStorage.setItem(CLAVE, JSON.stringify({
+        v: 1, analiticas: !!analiticas, fecha: new Date().toISOString(),
+      }));
+    } catch (e) { /* sin donde guardar: se volvera a preguntar */ }
+  }
+
+  // AQUI va el codigo de analitica el dia que se añada (Google Analytics,
+  // Plausible, lo que sea). Se llama SOLO desde aqui, o sea solo tras el si.
+  // No lo pongas en el <head>: eso es cargarlo antes de preguntar, que es
+  // exactamente lo que la ley prohibe y lo que casi todo el mundo hace.
+  var cargada = false;
+  function cargarAnaliticas() {
+    if (cargada) return;
+    cargada = true;
+    /* Ejemplo, cuando toque:
+       var s = document.createElement('script');
+       s.async = true;
+       s.src = 'https://www.googletagmanager.com/gtag/js?id=G-XXXXXXX';
+       document.head.appendChild(s);
+    */
+  }
+
+  function mostrar(el, si) { if (si) { el.setAttribute('data-ver', ''); } else { el.removeAttribute('data-ver'); } }
+
+  function cerrarTodo() { mostrar(banner, false); mostrar(panel, false); mostrar(tapa, false); }
+
+  function decidir(analiticas) {
+    guardar(analiticas);
+    if (analiticas) cargarAnaliticas();
+    cerrarTodo();
+  }
+
+  function abrirPanel() {
+    var g = leer();
+    casilla.checked = !!(g && g.analiticas);   // nunca premarcado sin decision previa
+    mostrar(panel, true); mostrar(tapa, true); mostrar(banner, false);
+    panel.querySelector('button').focus();
+  }
+
+  document.addEventListener('click', function (ev) {
+    var b = ev.target.closest('[data-ck]');
+    if (!b) return;
+    var q = b.getAttribute('data-ck');
+    if (q === 'aceptar')  decidir(true);
+    if (q === 'rechazar') decidir(false);
+    if (q === 'guardar')  decidir(casilla.checked);
+    if (q === 'abrir')    abrirPanel();
+    if (q === 'preferencias') { ev.preventDefault(); abrirPanel(); }
+  });
+
+  document.addEventListener('keydown', function (ev) {
+    // Escape cierra el panel pero NO guarda nada: cerrar no es consentir.
+    if (ev.key === 'Escape' && panel.hasAttribute('data-ver')) { mostrar(panel, false); mostrar(tapa, false); mostrar(banner, true); }
+  });
+
+  var guardado = leer();
+  if (guardado && typeof guardado.analiticas === 'boolean') {
+    if (guardado.analiticas) cargarAnaliticas();
+  } else {
+    mostrar(banner, true);
+  }
+})();
+</script>
 </body>
 </html>
