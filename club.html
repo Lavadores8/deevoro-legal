@@ -8,10 +8,13 @@
 <title>Apoya a tu club · Deevoro</title>
 <link rel="icon" type="image/png" href="./icono.png">
 <meta name="theme-color" content="#e22d28">
-<meta property="og:title" content="Apoya a tu club con Deevoro">
-<meta property="og:description" content="Pide en los bares y restaurantes de tu zona y el 10% de cada pedido va a tu club o asociación, sin que te cueste más.">
+<meta property="og:site_name" content="Deevoro">
+<meta property="og:title" content="🏅 Te invitan a apoyar a tu club">
+<meta property="og:description" content="Descarga Deevoro y pide en los bares y restaurantes de tu zona: el 10% de cada pedido va a tu club o asociación. No te cuesta nada más.">
 <meta property="og:image" content="https://legal.deevoro.com/icono.png">
 <meta property="og:type" content="website">
+<meta name="twitter:card" content="summary">
+<meta name="description" content="Descarga Deevoro y apoya a tu club o asociación con cada pedido, sin coste extra.">
 </head>
 <body>
 <style>
@@ -71,7 +74,13 @@
   function ver(id) {
     ['cargando', 'club', 'generico'].forEach(function (x) { document.getElementById(x).hidden = (x !== id); });
   }
-  var codigo = (new URLSearchParams(location.search).get('c') || '').toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 30);
+  // Vale la forma corta (club?CODIGO), que es la que se comparte, y la larga
+  // (club.html?c=CODIGO), por si alguien ya repartio un enlace de la primera version.
+  var q = new URLSearchParams(location.search);
+  var bruto = q.get('c') || location.search.replace(/^\?/, '').split('&')[0];
+  var codigo = bruto || '';
+  try { codigo = decodeURIComponent(codigo); } catch (e) { /* mal escrito: se limpia igual */ }
+  codigo = codigo.toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 30);
   if (!codigo) { ver('generico'); return; }
 
   fetch(URL_SB + '/rest/v1/rpc/buscar_club_por_codigo', {
