@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<meta name="referrer" content="no-referrer">
+<title>Nueva contraseña · Deevoro</title>
+<link rel="icon" type="image/png" href="./icono.png">
+<meta name="theme-color" content="#e22d28">
+</head>
+<body>
+<style>
+  :root { --tinta:#161616; --suave:#5c5654; --linea:#e8e4e3; --acento:#e22d28; --fondo:#fffdfc; --caja:#ffffff; --ok:#1e7e34; --campo:#ffffff; }
+  @media (prefers-color-scheme: dark) {
+    :root { --tinta:#f4f2f1; --suave:#a9a3a1; --linea:#332f2e; --acento:#ff6b66; --fondo:#131111; --caja:#1c1919; --ok:#4cc36b; --campo:#141212; }
+  }
+  body { margin:0; background:var(--fondo); color:var(--tinta);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; }
+  .cf { max-width:30rem; margin:0 auto; padding:3.5rem 1.25rem; line-height:1.6; }
+  .cf .marca { font-weight:800; letter-spacing:.06em; color:var(--acento); font-size:.8rem; text-transform:uppercase; margin:0 0 1.5rem; }
+  .cf .caja { background:var(--caja); border:1px solid var(--linea); border-radius:.9rem; padding:1.75rem 1.5rem; }
+  .cf .icono { font-size:2.4rem; line-height:1; margin:0 0 .8rem; }
+  .cf h1 { font-size:1.45rem; line-height:1.25; margin:0 0 .6rem; font-weight:800; text-wrap:balance; }
+  .cf p { margin:0 0 .9rem; color:var(--suave); }
+  .cf .ok h1 { color:var(--ok); }
+  .cf .boton { display:inline-block; margin-top:.4rem; background:var(--acento); color:#fff; text-decoration:none; border:0;
+    font:inherit; font-weight:700; padding:.8rem 1.4rem; border-radius:.6rem; min-height:44px; cursor:pointer; }
+  .cf .boton[disabled] { opacity:.6; cursor:default; }
+  .cf .boton:focus-visible, .cf input:focus-visible { outline:3px solid var(--tinta); outline-offset:2px; }
+  .cf label { display:block; font-weight:700; font-size:.9rem; margin:1rem 0 .35rem; }
+  .cf input { width:100%; box-sizing:border-box; font:inherit; font-size:1rem; padding:.75rem .85rem; border-radius:.55rem;
+    border:1px solid var(--linea); background:var(--campo); color:var(--tinta); }
+  .cf .ayuda { font-size:.85rem; margin:.35rem 0 0; }
+  .cf .error { color:var(--acento); font-weight:700; font-size:.9rem; margin:.9rem 0 0; }
+  .cf .pie { margin-top:1.5rem; font-size:.85rem; color:var(--suave); }
+  .cf a { color:var(--acento); }
+  [hidden] { display:none !important; }
+</style>
+<main class="cf">
+  <p class="marca">Deevoro</p>
+  <form class="caja" id="formulario" novalidate>
+    <p class="icono" aria-hidden="true">🔑</p>
+    <h1>Elige tu nueva contraseña</h1>
+    <p>La usarás para entrar en la app de Deevoro.</p>
+    <label for="pass1">Nueva contraseña</label>
+    <input id="pass1" type="password" autocomplete="new-password" minlength="8" required>
+    <p class="ayuda">Al menos 8 caracteres.</p>
+    <label for="pass2">Repítela</label>
+    <input id="pass2" type="password" autocomplete="new-password" minlength="8" required>
+    <p class="error" id="error" role="alert" hidden></p>
+    <button class="boton" id="guardar" type="submit">Guardar contraseña</button>
+  </form>
+  <div class="caja ok" id="ok" hidden>
+    <p class="icono" aria-hidden="true">✅</p>
+    <h1>¡Contraseña cambiada!</h1>
+    <p>Ya puedes entrar en la app con tu email y tu contraseña nueva.</p>
+    <a class="boton" href="deevoro://">Abrir la app</a>
+  </div>
+  <div class="caja" id="caducado" hidden>
+    <p class="icono" aria-hidden="true">⚠️</p>
+    <h1>Este enlace ya no vale</h1>
+    <p>Ya se usó o ha caducado. Pide otro desde la app: en la pantalla de entrar, pulsa «¿Olvidaste tu contraseña?».</p>
+  </div>
+  <div class="caja" id="sinenlace" hidden>
+    <p class="icono" aria-hidden="true">✉️</p>
+    <h1>Abre el enlace desde el correo</h1>
+    <p>Para cambiar tu contraseña, pide el correo desde la app («¿Olvidaste tu contraseña?») y pulsa su botón.</p>
+  </div>
+  <p class="pie">¿Dudas? Escríbenos a <a href="mailto:soporte@deevoro.com">soporte@deevoro.com</a>.</p>
+</main>
+<script>
+(function () {
+  var URL_SB = "https://xkerdlmsrdqoozbzvxps.supabase.co";
+  var CLAVE = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhrZXJkbG1zcmRxb296Ynp2eHBzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIyMTUyMjEsImV4cCI6MjA5Nzc5MTIyMX0.sCYaUXoBm6UOX6kcCc1jjTZP_4xNst62O681UF1eyLU";
+  var MIN = 8;
+  function ver(id) {
+    ['formulario', 'ok', 'caducado', 'sinenlace'].forEach(function (x) {
+      document.getElementById(x).hidden = (x !== id);
+    });
+  }
+  var q = new URLSearchParams(location.search);
+  var token = q.get('token_hash');
+  if (history.replaceState) history.replaceState(null, '', location.pathname);
+  if (!token) { ver('sinenlace'); return; }
+
+  var form = document.getElementById('formulario');
+  var boton = document.getElementById('guardar');
+  var aviso = document.getElementById('error');
+  function error(t) { aviso.textContent = t; aviso.hidden = false; }
+
+  form.addEventListener('submit', function (ev) {
+    ev.preventDefault();
+    aviso.hidden = true;
+    var p1 = document.getElementById('pass1').value;
+    var p2 = document.getElementById('pass2').value;
+    if (p1.length < MIN) { error('La contraseña debe tener al menos ' + MIN + ' caracteres.'); return; }
+    if (p1 !== p2) { error('Las dos contraseñas no coinciden.'); return; }
+    boton.disabled = true; boton.textContent = 'Guardando…';
+    var cab = { apikey: CLAVE, 'Content-Type': 'application/json' };
+
+    // 1) El token del correo -> sesion temporal (solo en esta variable).
+    fetch(URL_SB + '/auth/v1/verify', {
+      method: 'POST', headers: cab, cache: 'no-store', credentials: 'omit',
+      body: JSON.stringify({ type: 'recovery', token_hash: token })
+    }).then(function (r) {
+      if (!r.ok) { var e = new Error('caducado'); e.caducado = r.status < 500; throw e; }
+      return r.json();
+    }).then(function (s) {
+      var auth = Object.assign({ Authorization: 'Bearer ' + s.access_token }, cab);
+      // 2) La contraseña nueva.
+      return fetch(URL_SB + '/auth/v1/user', {
+        method: 'PUT', headers: auth, cache: 'no-store', credentials: 'omit',
+        body: JSON.stringify({ password: p1 })
+      }).then(function (r) {
+        if (r.ok) {
+          // 3) La sesion temporal se cierra: ya no hace falta.
+          fetch(URL_SB + '/auth/v1/logout', { method: 'POST', headers: auth, credentials: 'omit' }).catch(function () {});
+          ver('ok');
+          return;
+        }
+        return r.json().catch(function () { return {}; }).then(function (b) {
+          var m = String(b.msg || b.message || '');
+          var e = new Error(/same|different from the old/i.test(m) ? 'Esa es la contraseña que ya tenías: elige otra distinta.'
+            : /weak|short|characters/i.test(m) ? 'Esa contraseña es demasiado débil. Prueba con otra más larga.'
+            : 'No se pudo guardar. Vuelve a intentarlo.');
+          throw e;
+        });
+      });
+    }).catch(function (e) {
+      boton.disabled = false; boton.textContent = 'Guardar contraseña';
+      if (e && e.caducado) { ver('caducado'); return; }
+      error(e && e.message && e.message !== 'caducado' ? e.message : 'Revisa tu conexión y vuelve a intentarlo.');
+    });
+  });
+})();
+</script>
+</body>
+</html>
