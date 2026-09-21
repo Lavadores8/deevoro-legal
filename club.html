@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<meta name="referrer" content="no-referrer">
+<title>Apoya a tu club · Deevoro</title>
+<link rel="icon" type="image/png" href="./icono.png">
+<meta name="theme-color" content="#e22d28">
+<meta property="og:title" content="Apoya a tu club con Deevoro">
+<meta property="og:description" content="Pide en los bares y restaurantes de tu zona y el 10% de cada pedido va a tu club o asociación, sin que te cueste más.">
+<meta property="og:image" content="https://legal.deevoro.com/icono.png">
+<meta property="og:type" content="website">
+</head>
+<body>
+<style>
+  :root { --tinta:#161616; --suave:#5c5654; --linea:#e8e4e3; --acento:#e22d28; --fondo:#fffdfc; --caja:#ffffff; --ok:#1e7e34; --campo:#ffffff; }
+  @media (prefers-color-scheme: dark) {
+    :root { --tinta:#f4f2f1; --suave:#a9a3a1; --linea:#332f2e; --acento:#ff6b66; --fondo:#131111; --caja:#1c1919; --ok:#4cc36b; --campo:#141212; }
+  }
+  body { margin:0; background:var(--fondo); color:var(--tinta);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; }
+  .cf { max-width:30rem; margin:0 auto; padding:3.5rem 1.25rem; line-height:1.6; }
+  .cf .marca { font-weight:800; letter-spacing:.06em; color:var(--acento); font-size:.8rem; text-transform:uppercase; margin:0 0 1.5rem; }
+  .cf .caja { background:var(--caja); border:1px solid var(--linea); border-radius:.9rem; padding:1.75rem 1.5rem; }
+  .cf .icono { font-size:2.4rem; line-height:1; margin:0 0 .8rem; }
+  .cf h1 { font-size:1.45rem; line-height:1.25; margin:0 0 .6rem; font-weight:800; text-wrap:balance; }
+  .cf p { margin:0 0 .9rem; color:var(--suave); }
+  .cf .ok h1 { color:var(--ok); }
+  .cf .boton { display:inline-block; margin-top:.4rem; background:var(--acento); color:#fff; text-decoration:none; border:0;
+    font:inherit; font-weight:700; padding:.8rem 1.4rem; border-radius:.6rem; min-height:44px; cursor:pointer; }
+  .cf .boton[disabled] { opacity:.6; cursor:default; }
+  .cf .boton:focus-visible, .cf input:focus-visible { outline:3px solid var(--tinta); outline-offset:2px; }
+  .cf label { display:block; font-weight:700; font-size:.9rem; margin:1rem 0 .35rem; }
+  .cf input { width:100%; box-sizing:border-box; font:inherit; font-size:1rem; padding:.75rem .85rem; border-radius:.55rem;
+    border:1px solid var(--linea); background:var(--campo); color:var(--tinta); }
+  .cf .ayuda { font-size:.85rem; margin:.35rem 0 0; }
+  .cf .error { color:var(--acento); font-weight:700; font-size:.9rem; margin:.9rem 0 0; }
+  .cf .pie { margin-top:1.5rem; font-size:.85rem; color:var(--suave); }
+  .cf a { color:var(--acento); }
+  [hidden] { display:none !important; }
+</style>
+<main class="cf">
+  <p class="marca">Deevoro</p>
+  <div class="caja" id="cargando">
+    <p class="icono" aria-hidden="true">⏳</p>
+    <h1>Un momento…</h1>
+  </div>
+  <div class="caja" id="club" hidden>
+    <img id="escudo" alt="" hidden referrerpolicy="no-referrer"
+      style="width:72px;height:72px;object-fit:contain;border-radius:.6rem;margin:0 0 .9rem;background:#fff;border:1px solid var(--linea);">
+    <h1 id="titulo">Apoya a tu club</h1>
+    <p>Descarga Deevoro, pide en los bares y restaurantes de tu zona y el <strong>10% de cada pedido</strong> irá a <strong id="nombre1"></strong>. No te cuesta más: lo pone el local.</p>
+    <a class="boton" id="descargar" href="https://expo.dev/artifacts/eas/b0ouAs3jkGDcO04oT9ipBVOLveaNXfANWAu2AWp0Iwk.apk">Descargar Deevoro</a>
+    <p class="ayuda" style="margin-top:1rem;">¿Ya tienes la app? <a id="abrir" href="#">Ábrela y apoya a <span id="nombre2"></span></a>.</p>
+    <p class="ayuda">Código del club: <strong id="codigo"></strong>. La app lo pondrá sola; si no, escríbelo al registrarte.</p>
+  </div>
+  <div class="caja" id="generico" hidden>
+    <p class="icono" aria-hidden="true">🏅</p>
+    <h1>Apoya a tu club con cada pedido</h1>
+    <p id="motivo">Pide en los bares y restaurantes de tu zona y el 10% de cada pedido irá al club o asociación que elijas. No te cuesta más.</p>
+    <a class="boton" href="https://expo.dev/artifacts/eas/b0ouAs3jkGDcO04oT9ipBVOLveaNXfANWAu2AWp0Iwk.apk">Descargar Deevoro</a>
+  </div>
+  <p class="pie">¿Dudas? Escríbenos a <a href="mailto:soporte@deevoro.com">soporte@deevoro.com</a>.</p>
+</main>
+<script>
+(function () {
+  var URL_SB = "https://xkerdlmsrdqoozbzvxps.supabase.co";
+  var CLAVE = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhrZXJkbG1zcmRxb296Ynp2eHBzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIyMTUyMjEsImV4cCI6MjA5Nzc5MTIyMX0.sCYaUXoBm6UOX6kcCc1jjTZP_4xNst62O681UF1eyLU";
+  function ver(id) {
+    ['cargando', 'club', 'generico'].forEach(function (x) { document.getElementById(x).hidden = (x !== id); });
+  }
+  var codigo = (new URLSearchParams(location.search).get('c') || '').toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 30);
+  if (!codigo) { ver('generico'); return; }
+
+  fetch(URL_SB + '/rest/v1/rpc/buscar_club_por_codigo', {
+    method: 'POST',
+    headers: { apikey: CLAVE, Authorization: 'Bearer ' + CLAVE, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ p_codigo: codigo }),
+    credentials: 'omit'
+  }).then(function (r) { return r.ok ? r.json() : null; }).then(function (club) {
+    if (!club || !club.id) {
+      document.getElementById('motivo').textContent = 'No encontramos el club de este enlace. Puedes descargar la app igualmente y elegir tu club al registrarte.';
+      ver('generico');
+      return;
+    }
+    // textContent y no innerHTML: el nombre lo escribe el club.
+    document.getElementById('titulo').textContent = 'Apoya a ' + club.nombre;
+    document.getElementById('nombre1').textContent = club.nombre;
+    document.getElementById('nombre2').textContent = club.nombre;
+    document.getElementById('codigo').textContent = codigo;
+    document.title = 'Apoya a ' + club.nombre + ' · Deevoro';
+    if (club.logo_url && /^https:\/\//.test(club.logo_url)) {
+      var img = document.getElementById('escudo');
+      img.src = club.logo_url; img.hidden = false;
+    }
+    document.getElementById('abrir').href = 'deevoro://club/' + codigo;
+    // Al descargar se deja el codigo en el portapapeles: es lo unico que
+    // sobrevive a la instalacion, y la app lo recoge la primera vez.
+    document.getElementById('descargar').addEventListener('click', function () {
+      try { if (navigator.clipboard) navigator.clipboard.writeText('deevoro-club:' + codigo).catch(function () {}); } catch (e) { /* sin permiso: queda el codigo a la vista */ }
+    });
+    ver('club');
+  }).catch(function () { ver('generico'); });
+})();
+</script>
+</body>
+</html>
