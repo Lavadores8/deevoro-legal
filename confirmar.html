@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<meta name="referrer" content="no-referrer">
+<title>Confirmar correo · Deevoro</title>
+<link rel="icon" type="image/png" href="./icono.png">
+<meta name="theme-color" content="#e22d28">
+</head>
+<body>
+<style>
+  :root { --tinta:#161616; --suave:#5c5654; --linea:#e8e4e3; --acento:#e22d28; --fondo:#fffdfc; --caja:#ffffff; --ok:#1e7e34; }
+  @media (prefers-color-scheme: dark) {
+    :root { --tinta:#f4f2f1; --suave:#a9a3a1; --linea:#332f2e; --acento:#ff6b66; --fondo:#131111; --caja:#1c1919; --ok:#4cc36b; }
+  }
+  body { margin:0; background:var(--fondo); color:var(--tinta);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; }
+  .cf { max-width:30rem; margin:0 auto; padding:3.5rem 1.25rem; line-height:1.6; }
+  .cf .marca { font-weight:800; letter-spacing:.06em; color:var(--acento); font-size:.8rem; text-transform:uppercase; margin:0 0 1.5rem; }
+  .cf .caja { background:var(--caja); border:1px solid var(--linea); border-radius:.9rem; padding:1.75rem 1.5rem; }
+  .cf .icono { font-size:2.4rem; line-height:1; margin:0 0 .8rem; }
+  .cf h1 { font-size:1.45rem; line-height:1.25; margin:0 0 .6rem; font-weight:800; text-wrap:balance; }
+  .cf p { margin:0 0 .9rem; color:var(--suave); }
+  .cf .ok h1 { color:var(--ok); }
+  .cf .boton { display:inline-block; margin-top:.4rem; background:var(--acento); color:#fff; text-decoration:none;
+    font-weight:700; padding:.8rem 1.4rem; border-radius:.6rem; min-height:44px; }
+  .cf .boton:focus-visible { outline:3px solid var(--tinta); outline-offset:2px; }
+  .cf .pie { margin-top:1.5rem; font-size:.85rem; color:var(--suave); }
+  .cf a { color:var(--acento); }
+  [hidden] { display:none !important; }
+</style>
+<main class="cf">
+  <p class="marca">Deevoro</p>
+  <div class="caja" id="cargando">
+    <p class="icono" aria-hidden="true">⏳</p>
+    <h1>Confirmando tu correo…</h1>
+    <p>Un momento.</p>
+  </div>
+  <div class="caja ok" id="ok" hidden>
+    <p class="icono" aria-hidden="true">✅</p>
+    <h1>¡Correo confirmado!</h1>
+    <p>Ya puedes entrar en la app de Deevoro con tu email y tu contraseña.</p>
+    <a class="boton" href="deevoro://">Abrir la app</a>
+  </div>
+  <div class="caja" id="caducado" hidden>
+    <p class="icono" aria-hidden="true">⚠️</p>
+    <h1>Este enlace ya no vale</h1>
+    <p>Ya se usó o ha caducado. Si ya confirmaste tu correo antes, no tienes que hacer nada más: entra en la app con tu email y tu contraseña.</p>
+    <p>Si no llegaste a confirmarlo, vuelve a pulsar «Crear cuenta» en la app con el mismo email: te enviaremos un correo nuevo.</p>
+  </div>
+  <div class="caja" id="sinenlace" hidden>
+    <p class="icono" aria-hidden="true">✉️</p>
+    <h1>Abre el enlace desde el correo</h1>
+    <p>Esta página confirma tu cuenta cuando llegas desde el botón del correo que te enviamos.</p>
+  </div>
+  <div class="caja" id="fallo" hidden>
+    <p class="icono" aria-hidden="true">📶</p>
+    <h1>No hemos podido comprobarlo</h1>
+    <p>Revisa tu conexión y vuelve a pulsar el botón del correo.</p>
+  </div>
+  <p class="pie">¿Dudas? Escríbenos a <a href="mailto:soporte@deevoro.com">soporte@deevoro.com</a>.</p>
+</main>
+<script>
+(function () {
+  var URL_SB = "https://xkerdlmsrdqoozbzvxps.supabase.co";
+  var CLAVE = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhrZXJkbG1zcmRxb296Ynp2eHBzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIyMTUyMjEsImV4cCI6MjA5Nzc5MTIyMX0.sCYaUXoBm6UOX6kcCc1jjTZP_4xNst62O681UF1eyLU";
+  function ver(id) {
+    ['cargando', 'ok', 'caducado', 'sinenlace', 'fallo'].forEach(function (x) {
+      document.getElementById(x).hidden = (x !== id);
+    });
+  }
+  var q = new URLSearchParams(location.search);
+  var token = q.get('token_hash');
+  var tipo = q.get('type') || 'email';
+  // El token no se queda en la barra de direcciones ni en el historial.
+  if (history.replaceState) history.replaceState(null, '', location.pathname);
+  if (!token) { ver('sinenlace'); return; }
+  fetch(URL_SB + '/auth/v1/verify', {
+    method: 'POST',
+    headers: { apikey: CLAVE, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ type: tipo, token_hash: token }),
+    cache: 'no-store',
+    credentials: 'omit'
+  }).then(function (r) {
+    // La sesion que devuelve Supabase se descarta: aqui solo se confirma.
+    if (r.ok) { ver('ok'); return; }
+    ver(r.status >= 500 ? 'fallo' : 'caducado');
+  }).catch(function () { ver('fallo'); });
+})();
+</script>
+</body>
+</html>
