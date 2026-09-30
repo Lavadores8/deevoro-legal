@@ -1,0 +1,435 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Deevoro para restaurantes</title>
+<meta name="description" content="Más pedidos del barrio para tu bar o restaurante: 15 % + IVA solo sobre la comida, el envío entero para ti y sin cuotas. El 10 % de cada pedido va a un club o asociación de la zona.">
+<meta property="og:title" content="Deevoro para restaurantes">
+<meta property="og:description" content="Más pedidos del barrio y te quedas más de cada uno. Sin cuotas ni permanencia.">
+<meta property="og:image" content="https://deevoro.com/icono.png">
+<meta property="og:type" content="website">
+<link rel="icon" href="./icono.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Figtree:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+  :root {
+    --paper: #F4F5F7;
+    --surface: #FFFFFF;
+    --ink: #15171C;
+    --muted: #4B5360;
+    --faint: #7A818D;
+    --line: #E1E4E9;
+    --red: #D32F2F;
+    --red-ink: #B3261E;
+    --red-soft: #FDECEC;
+    --green: #1E7E34;
+    --green-soft: #E6F4EA;
+    --ticket: #FFFDF8;
+    --ticket-ink: #23201B;
+    --ticket-line: #D9D3C7;
+    --display: "Barlow Condensed", "Arial Narrow", "Roboto Condensed", sans-serif;
+    --body: "Figtree", "Segoe UI", system-ui, -apple-system, sans-serif;
+    --mono: "JetBrains Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --paper: #101216; --surface: #181B20; --ink: #ECEEF1; --muted: #B0B6BF; --faint: #8A919B; --line: #2A2F37;
+      --red: #F0544F; --red-ink: #FF7A74; --red-soft: #3A1D1E; --green: #56C271; --green-soft: #15291C;
+      --ticket: #1E1C19; --ticket-ink: #EFEAE0; --ticket-line: #3A362F;
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --paper: #101216; --surface: #181B20; --ink: #ECEEF1; --muted: #B0B6BF; --faint: #8A919B; --line: #2A2F37;
+    --red: #F0544F; --red-ink: #FF7A74; --red-soft: #3A1D1E; --green: #56C271; --green-soft: #15291C;
+    --ticket: #1E1C19; --ticket-ink: #EFEAE0; --ticket-line: #3A362F;
+  }
+  * { box-sizing: border-box; }
+  body { background: var(--paper); color: var(--ink); font-family: var(--body); font-size: 16px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+  .hoja { max-width: 820px; margin: 0 auto; padding-inline: 20px; padding-block: 28px 64px; }
+  a { color: var(--red-ink); text-underline-offset: 3px; }
+  a:focus-visible, button:focus-visible, summary:focus-visible, input:focus-visible { outline: 3px solid var(--red); outline-offset: 3px; border-radius: 4px; }
+  h1, h2, h3 { text-wrap: balance; margin: 0; }
+  p { margin: 0; }
+  .num { font-variant-numeric: tabular-nums; }
+
+  .marca { display: flex; align-items: center; gap: 12px; }
+  .marca img { width: 44px; height: 44px; border-radius: 10px; display: block; }
+  .marca b { font-family: var(--display); font-size: 1.6rem; font-weight: 800; letter-spacing: .02em; text-transform: uppercase; }
+  .eyebrow { font-size: 12px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--faint); }
+
+  .portada { display: grid; grid-template-columns: 1.25fr 1fr; gap: 28px; align-items: center; padding-block: 28px 32px; border-bottom: 1px solid var(--line); }
+  .portada-texto { display: grid; gap: 18px; }
+  .portada h1 { font-family: var(--display); font-weight: 800; text-transform: uppercase; font-size: clamp(2.3rem, 6.4vw, 3.9rem); line-height: .95; }
+  .portada h1 em { font-style: normal; color: var(--red); }
+  .entradilla { font-size: 1.08rem; color: var(--muted); max-width: 58ch; }
+  .claves { display: flex; flex-wrap: wrap; gap: 10px 0; margin: 0; padding: 0; list-style: none; }
+  .claves li { font-weight: 700; font-size: .95rem; padding-right: 16px; margin-right: 16px; border-right: 1px solid var(--line); }
+  .claves li:last-child { border-right: 0; margin-right: 0; padding-right: 0; }
+
+  /* El ticket de caja: dónde va cada euro de un pedido */
+  .ticket {
+    background: var(--ticket); color: var(--ticket-ink); font-family: var(--mono); font-size: .88rem;
+    border: 1px solid var(--ticket-line); border-radius: 6px; padding: 18px 18px 22px; position: relative;
+    box-shadow: 0 10px 30px -18px rgba(0,0,0,.35);
+  }
+  .ticket::after {
+    content: ""; position: absolute; left: 0; right: 0; bottom: -8px; height: 8px;
+    background: radial-gradient(circle at 6px 0, transparent 5px, var(--ticket) 5.5px) 0 0 / 12px 8px repeat-x;
+  }
+  .ticket .cab { text-align: center; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; margin-bottom: 4px; }
+  .ticket .sub { text-align: center; font-size: .78rem; opacity: .7; margin-bottom: 12px; }
+  .ticket .linea { display: flex; justify-content: space-between; gap: 12px; padding: 3px 0; }
+  .ticket .linea span:last-child { font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .ticket .sep { border-top: 1px dashed var(--ticket-line); margin: 8px 0; }
+  .ticket .menos { opacity: .82; }
+  .ticket .club { color: var(--green); padding-left: 14px; font-size: .82rem; }
+  .ticket .total { font-weight: 700; font-size: 1rem; }
+  .ticket .pie { margin-top: 10px; font-size: .74rem; opacity: .7; text-align: center; }
+
+  .indice { display: flex; flex-wrap: wrap; gap: 8px; padding-block: 18px; margin: 0; list-style: none; padding-left: 0; }
+  .indice a { display: inline-block; font-size: .85rem; font-weight: 600; color: var(--muted); text-decoration: none; border: 1px solid var(--line); border-radius: 999px; padding: 4px 12px; background: var(--surface); }
+  .indice a:hover { color: var(--ink); border-color: var(--faint); }
+
+  section { padding-block: 40px 8px; scroll-margin-top: 12px; }
+  .titulo { display: grid; gap: 6px; margin-bottom: 20px; }
+  h2 { font-family: var(--display); font-weight: 800; text-transform: uppercase; font-size: clamp(1.9rem, 4.6vw, 2.5rem); line-height: 1; }
+  h3 { font-size: 1.1rem; font-weight: 800; line-height: 1.3; }
+  .texto { display: grid; gap: 14px; max-width: 66ch; }
+  .texto p { color: var(--muted); }
+  .texto strong { color: var(--ink); }
+  .nota { font-size: .9rem; color: var(--faint); }
+
+  .cifras { display: grid; grid-template-columns: repeat(4, 1fr); border: 1px solid var(--line); border-radius: 12px; background: var(--surface); overflow: hidden; }
+  .cifras > div { padding: 16px; display: grid; gap: 4px; align-content: start; }
+  .cifras > div + div { border-left: 1px solid var(--line); }
+  .cifras b { font-family: var(--display); font-weight: 800; font-size: 2rem; line-height: 1; color: var(--red); }
+  .cifras span { font-size: .9rem; color: var(--muted); }
+
+  /* Calculadora */
+  .calc { border: 1px solid var(--line); border-radius: 14px; background: var(--surface); overflow: hidden; }
+  .calc-mandos { display: grid; gap: 18px; padding: 20px; }
+  .mando { display: grid; gap: 6px; }
+  .mando label { display: flex; justify-content: space-between; gap: 12px; font-weight: 600; font-size: .95rem; }
+  .mando label span:last-child { font-family: var(--mono); color: var(--red-ink); font-variant-numeric: tabular-nums; }
+  .mando input[type="range"] { width: 100%; accent-color: var(--red); height: 28px; }
+  .calc-res { display: grid; grid-template-columns: 1fr 1fr 1fr; border-top: 1px solid var(--line); }
+  .calc-res > div { padding: 16px 20px; display: grid; gap: 2px; }
+  .calc-res > div + div { border-left: 1px solid var(--line); }
+  .calc-res .etq { font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--faint); }
+  .calc-res output { font-family: var(--display); font-weight: 800; font-size: 2rem; line-height: 1; font-variant-numeric: tabular-nums; }
+  .calc-res .gana output { color: var(--green); }
+  .casilla { display: flex; align-items: center; gap: 10px; font-size: .95rem; font-weight: 600; cursor: pointer; }
+  .casilla input { width: 20px; height: 20px; accent-color: var(--red); }
+  .calc-igual { padding: 12px 20px; background: var(--green-soft); color: var(--ink); font-weight: 600; font-size: .95rem; border-top: 1px solid var(--line); }
+  .calc-pie { padding: 12px 20px 16px; font-size: .85rem; color: var(--faint); border-top: 1px solid var(--line); }
+
+  .razones { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .razones > div { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 16px 18px; display: grid; gap: 6px; align-content: start; }
+  .razones p { color: var(--muted); font-size: .95rem; }
+
+  dl.lista { margin: 0; display: grid; grid-template-columns: minmax(150px, 220px) 1fr; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); overflow: hidden; }
+  dl.lista dt, dl.lista dd { margin: 0; padding: 12px 16px; border-bottom: 1px solid var(--line); }
+  dl.lista dt { font-weight: 800; }
+  dl.lista dd { color: var(--muted); font-size: .95rem; }
+  dl.lista dt:last-of-type, dl.lista dd:last-of-type { border-bottom: 0; }
+
+  .promos { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .promos > div { border-top: 3px solid var(--red); padding-top: 10px; display: grid; gap: 4px; align-content: start; }
+  .promos b { font-family: var(--display); font-size: 1.35rem; font-weight: 800; text-transform: uppercase; line-height: 1.05; }
+  .promos .precio { font-family: var(--mono); font-weight: 700; color: var(--red-ink); font-size: .9rem; }
+  .promos span:last-child { font-size: .93rem; color: var(--muted); }
+
+  ol.pasos { list-style: none; counter-reset: p; padding: 0; margin: 0; display: grid; gap: 12px; }
+  ol.pasos > li { counter-increment: p; display: grid; grid-template-columns: 34px 1fr; gap: 12px; color: var(--muted); }
+  ol.pasos > li::before { content: counter(p); font-family: var(--display); font-weight: 800; font-size: 1.05rem; width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; background: var(--red-soft); color: var(--red-ink); }
+  ol.pasos strong { color: var(--ink); }
+  .aviso { padding: 14px 18px; border-radius: 12px; background: var(--green-soft); color: var(--ink); font-size: .95rem; }
+
+  .dudas { border: 1px solid var(--line); border-radius: 12px; background: var(--surface); }
+  .dudas details { border-bottom: 1px solid var(--line); }
+  .dudas details:last-child { border-bottom: 0; }
+  .dudas summary { cursor: pointer; list-style: none; padding: 14px 44px 14px 18px; font-weight: 700; position: relative; }
+  .dudas summary::-webkit-details-marker { display: none; }
+  .dudas summary::after { content: "+"; position: absolute; right: 18px; top: 50%; transform: translateY(-50%); font-family: var(--display); font-size: 1.5rem; font-weight: 700; color: var(--red); }
+  .dudas details[open] summary::after { content: "–"; }
+  .dudas details p { padding: 0 18px 16px; color: var(--muted); max-width: 66ch; }
+
+  .cierre { margin-top: 12px; display: grid; gap: 14px; padding: 22px; border-radius: 14px; background: var(--red); color: #fff; }
+  .cierre h2 { color: #fff; }
+  .cierre p { color: rgba(255,255,255,.92); max-width: 60ch; }
+  .botones { display: flex; flex-wrap: wrap; gap: 10px; }
+  .boton { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 12px 20px; border-radius: 10px; font-weight: 800; text-decoration: none; }
+  .boton.principal { background: #fff; color: var(--red-ink); }
+  .boton.sec { border: 2px solid rgba(255,255,255,.85); color: #fff; }
+  .boton:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
+  .contacto { display: flex; flex-wrap: wrap; gap: 10px 22px; font-weight: 700; }
+  .contacto a { color: #fff; }
+  .cierre .nota-app { font-size: .88rem; color: rgba(255,255,255,.85); }
+
+  footer { margin-top: 40px; padding-top: 18px; border-top: 1px solid var(--line); font-size: .85rem; color: var(--faint); display: grid; gap: 4px; }
+
+  @media (max-width: 680px) {
+    .portada { grid-template-columns: 1fr; }
+    .cifras { grid-template-columns: 1fr 1fr; }
+    .cifras > div:nth-child(3) { border-left: 0; }
+    .cifras > div:nth-child(n+3) { border-top: 1px solid var(--line); }
+    .calc-res { grid-template-columns: 1fr; }
+    .calc-res > div + div { border-left: 0; border-top: 1px solid var(--line); }
+    .razones, .promos { grid-template-columns: 1fr; }
+    dl.lista { grid-template-columns: 1fr; }
+    dl.lista dt { border-bottom: 0; padding-bottom: 0; }
+  }
+  @media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; transition: none !important; } }
+  @media print { body { background: #fff; } .indice, .mando input { display: none; } section, .ticket, .calc, .dudas details { break-inside: avoid; } }
+</style>
+</head>
+<body>
+<div class="hoja">
+
+  <header class="portada">
+    <div class="portada-texto">
+      <div class="marca"><img src="./icono.png" alt=""><b>Deevoro</b></div>
+      <p class="eyebrow">Para bares, restaurantes y comercios de comida</p>
+      <h1>Más pedidos del barrio. Y te quedas <em>más de cada uno</em>.</h1>
+      <p class="entradilla">Deevoro es una app de pedidos para recoger o a domicilio. Cada cliente elige un club o asociación de la zona y, con cada pedido, el 10% de la comida va para él. Ese 10% sale de tu comisión, no de tu cliente. Por eso los clubes animan a sus socios a pedirte a ti.</p>
+      <ul class="claves">
+        <li>15% + IVA, solo sobre la comida</li>
+        <li>El envío, entero para ti</li>
+        <li>Sin cuotas ni permanencia</li>
+        <li>Cobras con cada pedido</li>
+      </ul>
+    </div>
+
+    <div class="ticket" role="img" aria-label="Ejemplo: de un pedido de 25 euros de comida y 3 de envío, la parte del restaurante son 23,46 euros.">
+      <p class="cab">Pedido #0421</p>
+      <p class="sub">Ejemplo · a domicilio</p>
+      <div class="linea"><span>Comida</span><span>25,00 €</span></div>
+      <div class="linea"><span>Envío (lo fijas tú)</span><span>3,00 €</span></div>
+      <div class="sep"></div>
+      <div class="linea menos"><span>Comisión 15%</span><span>−3,75 €</span></div>
+      <div class="linea club"><span>de ella, al club del cliente</span><span>2,50 €</span></div>
+      <div class="linea menos"><span>IVA de la comisión*</span><span>−0,79 €</span></div>
+      <div class="sep"></div>
+      <div class="linea total"><span>Tu parte</span><span>23,46 €</span></div>
+      <p class="pie">*Deducible: tu coste real es 3,75 €, el 15% de la comida.</p>
+    </div>
+  </header>
+
+  <nav aria-label="Contenido">
+    <ul class="indice">
+      <li><a href="#cuentas">Las cuentas</a></li>
+      <li><a href="#compara">Compara</a></li>
+      <li><a href="#nuevos">Pedidos nuevos</a></li>
+      <li><a href="#por-que">Por qué te piden más</a></li>
+      <li><a href="#mandas">Tú mandas</a></li>
+      <li><a href="#promos">Promociones</a></li>
+      <li><a href="#alta">Alta en 10 minutos</a></li>
+      <li><a href="#dudas">Dudas</a></li>
+    </ul>
+  </nav>
+
+  <section id="cuentas">
+    <div class="titulo">
+      <p class="eyebrow">Sin letra pequeña</p>
+      <h2>Las cuentas</h2>
+    </div>
+    <div class="cifras">
+      <div><b class="num">15%</b><span>de comisión + IVA, solo sobre la comida. El IVA te lo deduces.</span></div>
+      <div><b class="num">100%</b><span>del envío es tuyo. La comisión nunca lo toca.</span></div>
+      <div><b class="num">0 €</b><span>de alta, de cuota mensual y de permanencia.</span></div>
+      <div><b>Con cada pedido</b><span>tu parte pasa a tu cuenta de Stripe, que la ingresa en tu banco automáticamente.</span></div>
+    </div>
+    <p class="nota" style="margin-top:12px">Los gastos de gestión del pedido los paga el cliente aparte y no salen de tu dinero.</p>
+  </section>
+
+  <section id="compara">
+    <div class="titulo">
+      <p class="eyebrow">Con tus números</p>
+      <h2>Compara con lo que pagas hoy</h2>
+    </div>
+    <div class="calc">
+      <div class="calc-mandos">
+        <div class="mando">
+          <label for="ventas"><span>Lo que vendes de comida al mes por apps</span><span id="ventasV">3.000 €</span></label>
+          <input id="ventas" type="range" min="500" max="20000" step="500" value="3000">
+        </div>
+        <div class="mando">
+          <label for="comision"><span>La comisión que pagas ahora (sin IVA)</span><span id="comisionV">30 %</span></label>
+          <input id="comision" type="range" min="10" max="40" step="1" value="30">
+        </div>
+        <div class="mando">
+          <label for="envios"><span>Lo que cobras de envío al mes</span><span id="enviosV">0 €</span></label>
+          <input id="envios" type="range" min="0" max="3000" step="50" value="0">
+        </div>
+        <label class="casilla" for="sobreEnvio"><input id="sobreEnvio" type="checkbox" checked> Mi app actual también se lleva comisión del envío</label>
+      </div>
+      <div class="calc-res" aria-live="polite">
+        <div><span class="etq">Te cuesta ahora</span><output id="ahora" class="num">900 €</output></div>
+        <div><span class="etq">Con Deevoro</span><output id="deevoro" class="num">450 €</output></div>
+        <div class="gana"><span class="etq" id="anualEtq">Ahorras al año</span><output id="anual" class="num">5.400 €</output></div>
+      </div>
+      <p class="calc-igual" id="igual" hidden>En comisión quedáis igual. La diferencia está en los pedidos que no tenías: los que te traen los clubes (mira abajo).</p>
+      <p class="calc-pie">Cifras al mes, solo de la comisión y sin IVA (en los dos casos es deducible). En Deevoro la comisión es solo sobre la comida: el envío es entero para ti. Si tu app actual te pone los repartidores, aquí el reparto lo haces tú o vendes para recoger.</p>
+    </div>
+  </section>
+
+  <section id="nuevos">
+    <div class="titulo">
+      <p class="eyebrow">No es cambiar de app</p>
+      <h2>Pedidos que no tenías</h2>
+    </div>
+    <div class="texto">
+      <p>Deevoro no te pide dejar ninguna otra app. Lo que te llega por aquí son <strong>pedidos de socios de clubes</strong> que te eligen porque su club gana con cada uno. Clientes nuevos, al mismo coste que ya pagas.</p>
+    </div>
+    <div class="calc" style="margin-top:16px">
+      <div class="calc-mandos">
+        <div class="mando">
+          <label for="nuevosN"><span>Pedidos nuevos a la semana</span><span id="nuevosV">10</span></label>
+          <input id="nuevosN" type="range" min="1" max="60" step="1" value="10">
+        </div>
+        <div class="mando">
+          <label for="ticket"><span>Lo que gasta cada uno en comida</span><span id="ticketV">20 €</span></label>
+          <input id="ticket" type="range" min="8" max="50" step="1" value="20">
+        </div>
+      </div>
+      <div class="calc-res" aria-live="polite">
+        <div class="gana"><span class="etq">Ventas nuevas al mes</span><output id="ventasNuevas" class="num">866 €</output></div>
+        <div><span class="etq">Te quedan tras la comisión</span><output id="teQuedan" class="num">736 €</output></div>
+        <div><span class="etq">Para el club del barrio</span><output id="paraClub" class="num">87 €</output></div>
+      </div>
+      <p class="calc-pie">Es un ejemplo para hacer cuentas, no una promesa: los pedidos dependen de los clientes. «Te quedan» es antes de tus costes de cocina.</p>
+    </div>
+  </section>
+
+  <section id="por-que">
+    <div class="titulo">
+      <p class="eyebrow">Clientes con un motivo</p>
+      <h2>Por qué te piden más</h2>
+    </div>
+    <div class="razones">
+      <div><h3>Los clubes te traen clientes</h3><p>Cada socio sabe que pedirte a ti ayuda a su club, su AMPA o su protectora. Y el club se lo recuerda por WhatsApp: tiene su propio objetivo, con una barra que se llena con cada pedido.</p></div>
+      <div><h3>«Amigo del club»</h3><p>Si te das de alta con el código de un club, sales con esa etiqueta para todos sus socios. Es tu escaparate en su comunidad.</p></div>
+      <div><h3>Los de al lado primero</h3><p>La app enseña los locales por distancia. El bar del barrio compite en igualdad con la gran cadena.</p></div>
+      <div><h3>Valoraciones de verdad</h3><p>Solo puede poner estrellas quien te ha pedido. Nada de reseñas falsas.</p></div>
+    </div>
+  </section>
+
+  <section id="mandas">
+    <div class="titulo">
+      <p class="eyebrow">Tu local, tus reglas</p>
+      <h2>Tú mandas</h2>
+    </div>
+    <dl class="lista">
+      <dt>Recogida o domicilio</dt><dd>Siempre puedes vender para recoger. A domicilio solo si tienes tu propio reparto, con tu radio y tu precio de envío (y, si quieres, envío gratis desde el importe que elijas).</dd>
+      <dt>Tu horario</dt><dd>Con turno partido si lo necesitas, y un botón para abrir o cerrar en cualquier momento.</dd>
+      <dt>Tu carta</dt><dd>Con un plato ya puedes empezar. Las fotos son opcionales.</dd>
+      <dt>Tu tiempo de espera</dt><dd>Lo cambias según vaya la cocina, y el cliente lo ve antes de pedir.</dd>
+      <dt>Pedidos en directo</dt><dd>Te suenan en el móvil en cuanto entran, con la app de Deevoro.</dd>
+      <dt>Números claros</dt><dd>Contabilidad del mes, histórico y facturas automáticas.</dd>
+      <dt>Reclamaciones justas</dt><dd>Si un cliente reclama, ves la reclamación y das tu versión antes de que se resuelva.</dd>
+    </dl>
+  </section>
+
+  <section id="promos">
+    <div class="titulo">
+      <p class="eyebrow">Solo si quieres</p>
+      <h2>Promociones para vender más</h2>
+    </div>
+    <div class="promos">
+      <div><b>Oferta por canje</b><span class="precio">1,49 € por canje</span><span>Mandas una oferta a los socios de un club. No pagas por publicarla: solo cuando un cliente la usa. La mitad va al club.</span></div>
+      <div><b>Aviso al móvil</b><span class="precio">14,99 € · el primero gratis</span><span>Un aviso a los clientes de la app que aceptan recibir ofertas.</span></div>
+      <div><b>«Estás on fire»</b><span class="precio">Tú pones el bote</span><span>Durante unos días, cada pedido suma un extra para el club del cliente y tu local sale con un 🔥. Del bote, el 85% va a los clubes.</span></div>
+    </div>
+    <p class="nota" style="margin-top:14px">Quien tiene una promoción activa sale el primero de la lista, con la etiqueta «Promocionado». Las promociones se contratan desde la app de Android.</p>
+  </section>
+
+  <section id="alta">
+    <div class="titulo">
+      <p class="eyebrow">Sin papeles</p>
+      <h2>Alta en 10 minutos</h2>
+    </div>
+    <ol class="pasos">
+      <li><span><strong>Tu local:</strong> dirección, teléfono y horario.</span></li>
+      <li><span><strong>Tu carta:</strong> con un plato basta para empezar.</span></li>
+      <li><span><strong>Cobros con Stripe:</strong> tu DNI y la cuenta del banco donde quieres recibir el dinero.</span></li>
+      <li><span><strong>Datos para tus facturas:</strong> NIF o CIF y dirección fiscal.</span></li>
+    </ol>
+    <p class="aviso" style="margin-top:16px">Si quieres, te lo montamos en persona: vamos a tu local, preparamos la carta contigo y a ti solo te quedan Stripe y tus datos.</p>
+  </section>
+
+  <section id="dudas">
+    <div class="titulo">
+      <p class="eyebrow">Lo que nos preguntan</p>
+      <h2>Dudas</h2>
+    </div>
+    <div class="dudas">
+      <details><summary>¿Necesito repartidores?</summary><p>No. Puedes vender solo para recoger. El domicilio es para quien ya tiene su propio reparto.</p></details>
+      <details><summary>¿Puedo poner los precios más altos que en el local?</summary><p>No, y es a propósito: en Deevoro tus precios no pueden superar a los de tu propio local. El 10% del club sale de la comisión, no de cobrarle más al cliente. Sí puedes tener otros precios en otras plataformas y hacer promociones en tu local.</p></details>
+      <details><summary>¿Cuándo cobro?</summary><p>Con cada pago, tu parte pasa a tu cuenta de Stripe, y Stripe la ingresa en tu banco automáticamente según su calendario de pagos. No hay que esperar a fin de mes ni reclamar nada.</p></details>
+      <details><summary>¿Me ata a algo?</summary><p>No. Sin cuota y sin permanencia: te das de baja cuando quieras desde la app.</p></details>
+      <details><summary>¿Qué móvil necesito?</summary><p>Uno Android con la app de Deevoro. La versión de iPhone llegará pronto.</p></details>
+      <details><summary>¿Y si ya estoy en otras apps?</summary><p>Puedes seguir en ellas. Deevoro no pide exclusividad.</p></details>
+    </div>
+  </section>
+
+  <div class="cierre">
+    <h2>¿Empezamos?</h2>
+    <p>Te damos de alta en 10 minutos y, si quieres, pasamos por tu local a dejarlo todo listo contigo.</p>
+    <div class="botones">
+      <a class="boton principal" href="https://wa.me/34698141226?text=Hola%2C%20tengo%20un%20restaurante%20y%20quiero%20unirme%20a%20Deevoro">Quiero unirme (WhatsApp)</a>
+      <a class="boton sec" href="https://expo.dev/artifacts/eas/PHCxQHFZGVwIWUAGGRQ54otzoTwpuIA4IVvGmMPAgdc.apk">Descargar la app (Android)</a>
+    </div>
+    <div class="contacto">
+      <a href="mailto:soporte@deevoro.com?subject=Quiero%20unir%20mi%20restaurante%20a%20Deevoro">soporte@deevoro.com</a>
+      <a class="num" href="tel:+34698141226">+34 698 141 226</a>
+    </div>
+    <p class="nota-app">La app ocupa unos 50 MB: mejor con wifi. Si al abrirla te dice «paquete no válido», espera a que termine la descarga y ábrela desde Archivos → Descargas.</p>
+  </div>
+
+  <footer>
+    <span>Deevoro es un servicio de Plataforma de apoyo al deporte Bade S.L. · NIF B93928877 · C/ Burgos, 44 - 2º · 36205 Vigo (Pontevedra).</span>
+    <span>Esto es un resumen de las <a href="./condiciones-comercio.html">condiciones para comercios</a>; si hay diferencias, mandan las condiciones.</span>
+  </footer>
+</div>
+
+<script>
+  (function () {
+    var fmt = new Intl.NumberFormat('es-ES', { maximumFractionDigits: 0 });
+    var val = function (id) { return Number(document.getElementById(id).value); };
+    var pon = function (id, t) { document.getElementById(id).textContent = t; };
+    function comparar() {
+      var v = val('ventas'), c = val('comision'), e = val('envios');
+      var sobreEnvio = document.getElementById('sobreEnvio').checked;
+      var ahora = (v + (sobreEnvio ? e : 0)) * c / 100;
+      var deevoro = v * 0.15;   // solo sobre la comida
+      var dif = Math.round((ahora - deevoro) * 12);
+      pon('ventasV', fmt.format(v) + ' €'); pon('comisionV', c + ' %'); pon('enviosV', fmt.format(e) + ' €');
+      pon('ahora', fmt.format(Math.round(ahora)) + ' €');
+      pon('deevoro', fmt.format(Math.round(deevoro)) + ' €');
+      var gana = dif > 0;
+      pon('anualEtq', gana ? 'Ahorras al año' : 'Diferencia al año');
+      pon('anual', gana ? fmt.format(dif) + ' €' : '—');
+      document.getElementById('igual').hidden = gana;
+    }
+    function nuevos() {
+      var n = val('nuevosN'), t = val('ticket');
+      var ventas = n * t * 52 / 12;
+      pon('nuevosV', String(n)); pon('ticketV', fmt.format(t) + ' €');
+      pon('ventasNuevas', fmt.format(Math.round(ventas)) + ' €');
+      pon('teQuedan', fmt.format(Math.round(ventas * 0.85)) + ' €');
+      pon('paraClub', fmt.format(Math.round(ventas * 0.10)) + ' €');
+    }
+    ['ventas', 'comision', 'envios', 'sobreEnvio'].forEach(function (id) {
+      document.getElementById(id).addEventListener('input', comparar);
+      document.getElementById(id).addEventListener('change', comparar);
+    });
+    ['nuevosN', 'ticket'].forEach(function (id) { document.getElementById(id).addEventListener('input', nuevos); });
+    comparar(); nuevos();
+  })();
+</script>
+</body>
+</html>
