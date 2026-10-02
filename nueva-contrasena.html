@@ -42,7 +42,7 @@
   <p class="marca">Deevoro</p>
   <form class="caja" id="formulario" novalidate>
     <p class="icono" aria-hidden="true">🔑</p>
-    <h1>Elige tu nueva contraseña</h1>
+    <h1 id="titulo">Elige tu nueva contraseña</h1>
     <p>La usarás para entrar en la app de Deevoro.</p>
     <label for="pass1">Nueva contraseña</label>
     <input id="pass1" type="password" autocomplete="new-password" minlength="8" required>
@@ -54,8 +54,9 @@
   </form>
   <div class="caja ok" id="ok" hidden>
     <p class="icono" aria-hidden="true">✅</p>
-    <h1>¡Contraseña cambiada!</h1>
+    <h1 id="titulo-ok">¡Contraseña cambiada!</h1>
     <p>Ya puedes entrar en la app con tu email y tu contraseña nueva.</p>
+    <a class="boton" id="descargar" href="https://expo.dev/artifacts/eas/PHCxQHFZGVwIWUAGGRQ54otzoTwpuIA4IVvGmMPAgdc.apk" hidden>Descargar la app</a>
     <a class="boton" href="deevoro://">Abrir la app</a>
   </div>
   <div class="caja" id="caducado" hidden>
@@ -82,8 +83,15 @@
   }
   var q = new URLSearchParams(location.search);
   var token = q.get('token_hash');
+  // invite: la primera contraseña de un comercio o club recien dado de alta.
+  var tipo = q.get('type') === 'invite' ? 'invite' : 'recovery';
   if (history.replaceState) history.replaceState(null, '', location.pathname);
   if (!token) { ver('sinenlace'); return; }
+  if (tipo === 'invite') {
+    document.getElementById('titulo').textContent = 'Crea tu contraseña';
+    document.getElementById('titulo-ok').textContent = '¡Contraseña creada!';
+    document.getElementById('descargar').hidden = false;
+  }
 
   var form = document.getElementById('formulario');
   var boton = document.getElementById('guardar');
@@ -103,7 +111,7 @@
     // 1) El token del correo -> sesion temporal (solo en esta variable).
     fetch(URL_SB + '/auth/v1/verify', {
       method: 'POST', headers: cab, cache: 'no-store', credentials: 'omit',
-      body: JSON.stringify({ type: 'recovery', token_hash: token })
+      body: JSON.stringify({ type: tipo, token_hash: token })
     }).then(function (r) {
       if (!r.ok) { var e = new Error('caducado'); e.caducado = r.status < 500; throw e; }
       return r.json();
