@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Apunta tu restaurante en Deevoro</title>
+<meta name="description" content="Rellena este formulario en 1 minuto y te montamos el local y la carta en Deevoro, la app de pedidos de Vigo en la que el 10 % de cada pedido va a un club o asociación. Alta gratis y sin permanencia.">
+<meta property="og:title" content="Apunta tu restaurante en Deevoro">
+<meta property="og:description" content="1 minuto y te montamos el local y la carta. Alta gratis, sin cuotas ni permanencia.">
+<meta property="og:image" content="https://deevoro.com/icono.png">
+<meta property="og:type" content="website">
+<link rel="icon" href="./icono.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Figtree:wght@400;500;600;700;800&display=swap">
+<style>
+  :root {
+    --paper: #F4F5F7; --surface: #FFFFFF; --ink: #15171C; --muted: #4B5360; --faint: #7A818D; --line: #E1E4E9;
+    --red: #D32F2F; --red-ink: #B3261E; --red-soft: #FDECEC; --green: #1E7E34; --green-soft: #E6F4EA;
+    --display: "Barlow Condensed", "Arial Narrow", "Roboto Condensed", sans-serif;
+    --body: "Figtree", "Segoe UI", system-ui, -apple-system, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --paper: #101216; --surface: #181B20; --ink: #ECEEF1; --muted: #B0B6BF; --faint: #8A919B; --line: #2A2F37;
+      --red: #F0544F; --red-ink: #FF7A74; --red-soft: #3A1D1E; --green: #56C271; --green-soft: #15291C;
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --paper: #101216; --surface: #181B20; --ink: #ECEEF1; --muted: #B0B6BF; --faint: #8A919B; --line: #2A2F37;
+    --red: #F0544F; --red-ink: #FF7A74; --red-soft: #3A1D1E; --green: #56C271; --green-soft: #15291C;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--body); font-size: 16px; line-height: 1.55; -webkit-font-smoothing: antialiased; }
+  .hoja { max-width: 640px; margin: 0 auto; padding: 24px 16px 64px; }
+  a { color: var(--red-ink); text-underline-offset: 3px; }
+  h1, h2 { text-wrap: balance; margin: 0; }
+  p { margin: 0; }
+  :focus-visible { outline: 3px solid var(--red); outline-offset: 3px; border-radius: 6px; }
+
+  .marca { display: flex; align-items: center; gap: 12px; text-decoration: none; color: inherit; }
+  .marca img { width: 40px; height: 40px; border-radius: 10px; display: block; }
+  .marca b { font-family: var(--display); font-size: 1.5rem; font-weight: 800; letter-spacing: .02em; text-transform: uppercase; }
+  .eyebrow { font-size: 12px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--faint); }
+
+  .portada { display: grid; gap: 14px; padding-block: 26px 22px; }
+  .portada h1 { font-family: var(--display); font-weight: 800; text-transform: uppercase; font-size: clamp(2.4rem, 11vw, 3.6rem); line-height: .95; }
+  .portada h1 em { font-style: normal; color: var(--red); }
+  .entradilla { font-size: 1.05rem; color: var(--muted); max-width: 56ch; }
+  .claves { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; padding: 0; list-style: none; }
+  .claves li { font-weight: 700; font-size: .9rem; background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: 5px 12px; }
+
+  form { display: grid; gap: 14px; }
+  fieldset { margin: 0; border: 1px solid var(--line); border-radius: 14px; background: var(--surface); padding: 18px 16px 20px; display: grid; gap: 14px; min-width: 0; }
+  legend { float: left; width: 100%; padding: 0; margin-bottom: 2px; font-family: var(--display); font-weight: 800; text-transform: uppercase; font-size: 1.45rem; line-height: 1; }
+  legend + * { clear: both; }
+  .campo { display: grid; gap: 6px; }
+  label, .etq { font-weight: 700; font-size: .95rem; }
+  .opc { font-weight: 500; color: var(--faint); }
+  .ayuda { font-size: .85rem; color: var(--muted); }
+  input[type="text"], input[type="email"], input[type="tel"], input[type="url"], input[type="number"], textarea {
+    width: 100%; font: inherit; color: var(--ink); background: var(--paper); border: 1.5px solid var(--line); border-radius: 10px; padding: 12px 14px; min-height: 48px;
+  }
+  textarea { min-height: 84px; resize: vertical; }
+  input:focus, textarea:focus { border-color: var(--red); outline: none; }
+  input[aria-invalid="true"] { border-color: var(--red); background: var(--red-soft); }
+
+  .fija { display: grid; gap: 4px; border: 1.5px solid var(--line); border-radius: 12px; padding: 12px 14px; background: var(--paper); }
+  .fija span { font-size: .88rem; color: var(--muted); }
+  .elige { display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; align-items: start; border: 1.5px solid var(--line); border-radius: 12px; padding: 12px 14px; background: var(--paper); }
+  .fija b, .elige b { font-size: 1rem; }
+  .elige span { grid-column: 2; font-size: .88rem; color: var(--muted); }
+  .elige { cursor: pointer; }
+  .elige input { width: 22px; height: 22px; margin: 1px 0 0; accent-color: var(--red); grid-row: span 2; }
+  .elige:has(input:checked) { border-color: var(--red); background: var(--red-soft); }
+  .casilla { display: grid; grid-template-columns: auto 1fr; gap: 12px; align-items: start; font-size: .95rem; cursor: pointer; }
+  .casilla input { width: 22px; height: 22px; margin: 1px 0 0; accent-color: var(--red); }
+  .legal { font-size: .8rem; color: var(--faint); line-height: 1.45; }
+  .trampa { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+
+  .enviar { font: inherit; font-family: var(--display); font-weight: 800; text-transform: uppercase; letter-spacing: .02em; font-size: 1.45rem;
+    width: 100%; min-height: 58px; border: 0; border-radius: 12px; background: var(--red); color: #fff; cursor: pointer; }
+  .enviar:disabled { opacity: .6; cursor: progress; }
+  .estado { min-height: 1.4em; font-weight: 700; color: var(--red-ink); text-align: center; }
+
+  .hecho { display: grid; gap: 14px; padding: 26px 20px; border-radius: 14px; background: var(--green-soft); border: 1px solid var(--line); text-align: center; }
+  .hecho[hidden] { display: none; }
+  .hecho .ok { font-size: 3rem; line-height: 1; }
+  .hecho h2 { font-family: var(--display); font-weight: 800; text-transform: uppercase; font-size: 2.2rem; line-height: 1; }
+  .hecho p { color: var(--muted); }
+  .hecho a.boton { display: inline-flex; justify-self: center; align-items: center; min-height: 48px; padding: 10px 20px; border-radius: 10px; background: var(--red); color: #fff; font-weight: 800; text-decoration: none; }
+
+  footer { margin-top: 36px; padding-top: 16px; border-top: 1px solid var(--line); font-size: .82rem; color: var(--faint); display: grid; gap: 4px; }
+</style>
+</head>
+<body>
+<div class="hoja">
+  <a class="marca" href="./restaurantes.html"><img src="./icono.png" alt=""><b>Deevoro</b></a>
+
+  <header class="portada">
+    <p class="eyebrow">Para bares y restaurantes de Vigo</p>
+    <h1>Apunta tu local en <em>Deevoro</em></h1>
+    <p class="entradilla">Rellena esto en 1 minuto y <strong>te montamos nosotros el local y la carta</strong>. Te escribimos para revisarlo contigo y a ti solo te queda conectar tus cobros.</p>
+    <ul class="claves"><li>Alta gratis</li><li>Sin cuotas ni permanencia</li><li>Te pasamos la carta</li></ul>
+  </header>
+
+  <form id="form" novalidate>
+    <fieldset>
+      <legend>Tu local</legend>
+      <div class="campo"><label for="nombre">Nombre del local</label>
+        <input id="nombre" name="nombre" type="text" maxlength="120" autocomplete="organization" placeholder="Ej. Pulpería do Porto" required></div>
+      <div class="campo"><label for="cocina">Tipo de cocina <span class="opc">(opcional)</span></label>
+        <input id="cocina" name="cocina" type="text" maxlength="80" placeholder="Pizzería, tapas, hamburguesas…"></div>
+      <div class="campo"><label for="direccion">Dirección del local</label>
+        <input id="direccion" name="direccion" type="text" maxlength="200" autocomplete="street-address" placeholder="Calle, número y ciudad" required></div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Contacto</legend>
+      <div class="campo"><label for="contacto">Tu nombre</label>
+        <input id="contacto" name="contacto" type="text" maxlength="80" autocomplete="name" placeholder="Nombre y apellido" required></div>
+      <div class="campo"><label for="email">Email</label>
+        <input id="email" name="email" type="email" maxlength="160" autocomplete="email" inputmode="email" placeholder="tu@correo.com" required>
+        <p class="ayuda">Con este email entrarás en la app. Revísalo bien.</p></div>
+      <div class="campo"><label for="telefono">Teléfono o WhatsApp</label>
+        <input id="telefono" name="telefono" type="tel" maxlength="16" autocomplete="tel" inputmode="tel" placeholder="600 000 000" required></div>
+    </fieldset>
+
+    <fieldset>
+      <legend>¿Cómo entregas?</legend>
+      <div class="fija"><b>🛍️ Recogida en el local</b><span>Siempre: el cliente pide y pasa a buscarlo.</span></div>
+      <label class="elige"><input type="checkbox" id="domicilio"><b>🛵 Tengo reparto propio</b><span>También llevo pedidos a domicilio, con mi repartidor o mi personal. Deevoro no pone repartidores.</span></label>
+    </fieldset>
+
+    <fieldset>
+      <legend>Para terminar</legend>
+      <div class="campo"><label for="codigoClub">¿Te ha invitado un club o asociación? <span class="opc">(opcional)</span></label>
+        <input id="codigoClub" type="text" maxlength="30" autocapitalize="characters" placeholder="Su código, por ejemplo INDECISOSFS">
+        <p class="ayuda">Saldrás en la app como «Amigo» de ese club.</p></div>
+      <div class="campo"><label for="comentarios">¿Algo más? <span class="opc">(opcional)</span></label>
+        <textarea id="comentarios" maxlength="1000" placeholder="Lo que quieras contarnos"></textarea></div>
+      <div class="trampa" aria-hidden="true"><label for="web">Web</label><input id="web" type="text" tabindex="-1" autocomplete="off"></div>
+      <label class="casilla"><input type="checkbox" id="acepta"><span>He leído la <a href="./privacidad.html" target="_blank" rel="noopener">política de privacidad</a> y acepto que Deevoro use estos datos para contactarme y dar de alta mi local.</span></label>
+      <p class="legal">Responsable: Plataforma de apoyo al deporte Bade S.L. Finalidad: contactarte y preparar el alta de tu local, a petición tuya. Puedes ejercer tus derechos de acceso, rectificación y supresión escribiendo a soporte@deevoro.com.</p>
+    </fieldset>
+
+    <button class="enviar" type="submit" id="enviar">Quiero estar en Deevoro</button>
+    <p class="estado" id="estado" role="status" aria-live="polite"></p>
+  </form>
+
+  <section class="hecho" id="hecho" hidden tabindex="-1">
+    <div class="ok" aria-hidden="true">🎉</div>
+    <h2 id="hechoT">¡Recibido!</h2>
+    <p id="hechoP">Te escribimos muy pronto para montarte el local.</p>
+    <a class="boton" href="./restaurantes.html">Ver cómo funciona Deevoro</a>
+  </section>
+
+  <footer>
+    <span>Deevoro es un servicio de Plataforma de apoyo al deporte Bade S.L. · NIF B93928877 · C/ Burgos, 44 - 2º · 36205 Vigo (Pontevedra).</span>
+    <span>¿Dudas? <a href="mailto:soporte@deevoro.com">soporte@deevoro.com</a> · <a href="./condiciones-comercio.html">Condiciones para comercios</a></span>
+  </footer>
+</div>
+
+<script>
+(function () {
+  var FUNCION = 'https://xkerdlmsrdqoozbzvxps.supabase.co/functions/v1/formulario-restaurante', ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhrZXJkbG1zcmRxb296Ynp2eHBzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIyMTUyMjEsImV4cCI6MjA5Nzc5MTIyMX0.sCYaUXoBm6UOX6kcCc1jjTZP_4xNst62O681UF1eyLU';
+  var $ = function (id) { return document.getElementById(id); };
+  // Teléfono: solo dígitos (y + delante)
+  $('telefono').addEventListener('input', function () {
+    var s = this.value, mas = s.trim().charAt(0) === '+';
+    this.value = (mas ? '+' : '') + s.replace(/\D/g, '').slice(0, mas ? 11 : 9);
+  });
+
+  function aviso(t) { $('estado').textContent = t; }
+  function marca(id, mal) { var el = $(id); if (mal) el.setAttribute('aria-invalid', 'true'); else el.removeAttribute('aria-invalid'); }
+  var val = function (id) { return $(id).value.trim(); };
+
+  function comprobar() {
+    var errores = [
+      ['nombre', val('nombre').length < 2, 'Falta el nombre del local.'],
+      ['direccion', val('direccion').length < 5, 'Falta la dirección del local.'],
+      ['contacto', val('contacto').length < 2, 'Falta tu nombre.'],
+      ['email', !/^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/.test(val('email')), 'Revisa el email.'],
+      ['telefono', !/^[6789]\d{8}$/.test(val('telefono').replace(/^\+34/, '')), 'Revisa el teléfono.'],
+    ];
+    var primero = null;
+    errores.forEach(function (e) { marca(e[0], e[1]); if (e[1] && !primero) primero = e; });
+    if (primero) { $(primero[0]).focus(); return primero[2]; }
+    if (!$('acepta').checked) { $('acepta').focus(); return 'Marca la casilla de la política de privacidad.'; }
+    return '';
+  }
+
+  $('form').addEventListener('submit', function (ev) {
+    ev.preventDefault();
+    var fallo = comprobar();
+    if (fallo) { aviso(fallo); return; }
+    var datos = {
+      nombre: val('nombre'), cocina: val('cocina'), direccion: val('direccion'),
+      contacto: val('contacto'), email: val('email'), telefono: val('telefono'),
+      domicilio: $('domicilio').checked,
+      codigoClub: val('codigoClub'),
+      comentarios: val('comentarios'), acepta: $('acepta').checked, web: $('web').value,
+    };
+    var boton = $('enviar'); boton.disabled = true; boton.textContent = 'Enviando…'; aviso('');
+    fetch(FUNCION, { method: 'POST', headers: { 'Content-Type': 'application/json', apikey: ANON, Authorization: 'Bearer ' + ANON }, body: JSON.stringify(datos) })
+      .then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) { return { ok: r.ok && j.ok, j: j }; }); })
+      .then(function (res) {
+        if (!res.ok) throw new Error(res.j.error || 'No se ha podido enviar. Inténtalo de nuevo.');
+        $('form').hidden = true;
+        $('hechoT').textContent = '¡Recibido, ' + datos.nombre + '!';
+        $('hechoP').textContent = 'Te escribimos muy pronto al ' + datos.telefono + ' o a ' + datos.email + ' para montarte el local.';
+        $('hecho').hidden = false; $('hecho').focus(); window.scrollTo(0, 0);
+      })
+      .catch(function (e) {
+        aviso(e && e.message && e.message !== 'Failed to fetch' ? e.message : 'No hay conexión. Comprueba tu internet e inténtalo de nuevo.');
+        boton.disabled = false; boton.textContent = 'Quiero estar en Deevoro';
+      });
+  });
+})();
+</script>
+</body>
+</html>
