@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Deevoro para restaurantes</title>
-<meta name="description" content="Más pedidos del barrio para tu bar o restaurante: 15 % + IVA solo sobre la comida, el envío entero para ti y sin cuotas. El 10 % de cada pedido va a un club o asociación de la zona.">
+<meta name="description" content="Más pedidos del barrio para tu bar o restaurante: 13 % + IVA solo sobre la comida, el envío entero para ti y sin cuotas. El 10 % de cada pedido va a un club o asociación de la zona.">
 <meta property="og:title" content="Deevoro para restaurantes">
 <meta property="og:description" content="Más pedidos del barrio y te quedas más de cada uno. Sin cuotas ni permanencia.">
 <meta property="og:image" content="https://deevoro.com/icono.png">
@@ -197,7 +197,7 @@
       <h1>Más pedidos del barrio. Y te quedas <em>más de cada uno</em>.</h1>
       <p class="entradilla">Deevoro es una app de pedidos para recoger o a domicilio. Cada cliente elige un club o asociación de la zona y, con cada pedido, el 10% de la comida va para él. Ese 10% sale de tu comisión, no de tu cliente. Por eso los clubes animan a sus socios a pedirte a ti.</p>
       <ul class="claves">
-        <li>15% + IVA, solo sobre la comida</li>
+        <li>13% + IVA, solo sobre la comida</li>
         <li>El envío, entero para ti</li>
         <li>Sin cuotas ni permanencia</li>
         <li>Cobras con cada pedido</li>
@@ -210,12 +210,12 @@
       <div class="linea"><span>Comida</span><span>25,00 €</span></div>
       <div class="linea"><span>Envío (lo fijas tú)</span><span>3,00 €</span></div>
       <div class="sep"></div>
-      <div class="linea menos"><span>Comisión 15%</span><span>−3,75 €</span></div>
+      <div class="linea menos"><span>Comisión 13%</span><span>−3,25 €</span></div>
       <div class="linea club"><span>de ella, al club del cliente (IVA incl.)</span><span>2,50 €</span></div>
-      <div class="linea menos"><span>IVA de la comisión*</span><span>−0,79 €</span></div>
+      <div class="linea menos"><span>IVA de la comisión*</span><span>−0,68 €</span></div>
       <div class="sep"></div>
-      <div class="linea total"><span>Tu parte</span><span>23,46 €</span></div>
-      <p class="pie">*Deducible: tu coste real es 3,75 €, el 15% de la comida.</p>
+      <div class="linea total"><span>Tu parte</span><span>24,07 €</span></div>
+      <p class="pie">*Deducible: tu coste real es 3,25 €, el 13% de la comida.</p>
     </div>
   </header>
 
@@ -238,7 +238,7 @@
       <h2>Las cuentas</h2>
     </div>
     <div class="cifras">
-      <div><b class="num">15%</b><span>de comisión + IVA, solo sobre la comida. El IVA te lo deduces.</span></div>
+      <div><b class="num">13%</b><span>de comisión + IVA, solo sobre la comida. El IVA te lo deduces.</span></div>
       <div><b class="num">100%</b><span>del envío es tuyo. La comisión nunca lo toca.</span></div>
       <div><b class="num">0 €</b><span>de alta, de cuota mensual y de permanencia.</span></div>
       <div><b>Con cada pedido</b><span>tu parte pasa a tu cuenta de Stripe, que la ingresa en tu banco automáticamente.</span></div>
@@ -269,8 +269,8 @@
       </div>
       <div class="calc-res" aria-live="polite">
         <div><span class="etq">Te cuesta ahora</span><output id="ahora" class="num">900 €</output></div>
-        <div><span class="etq">Con Deevoro</span><output id="deevoro" class="num">450 €</output></div>
-        <div class="gana"><span class="etq" id="anualEtq">Ahorras al año</span><output id="anual" class="num">5.400 €</output></div>
+        <div><span class="etq">Con Deevoro</span><output id="deevoro" class="num">390 €</output></div>
+        <div class="gana"><span class="etq" id="anualEtq">Ahorras al año</span><output id="anual" class="num">6.120 €</output></div>
       </div>
       <p class="calc-igual" id="igual" hidden>En comisión quedáis igual. La diferencia está en los pedidos que no tenías: los que te traen los clubes (mira abajo).</p>
       <p class="calc-pie">Cifras al mes, solo de la comisión y sin IVA (en los dos casos es deducible). En Deevoro la comisión es solo sobre la comida: el envío es entero para ti. Si tu app actual te pone los repartidores, aquí el reparto lo haces tú o vendes para recoger.</p>
@@ -298,7 +298,7 @@
       </div>
       <div class="calc-res" aria-live="polite">
         <div class="gana"><span class="etq">Ventas nuevas al mes</span><output id="ventasNuevas" class="num">866 €</output></div>
-        <div><span class="etq">Te quedan tras la comisión</span><output id="teQuedan" class="num">736 €</output></div>
+        <div><span class="etq">Te quedan tras la comisión</span><output id="teQuedan" class="num">753 €</output></div>
         <div><span class="etq">Para el club del barrio</span><output id="paraClub" class="num">87 €</output></div>
       </div>
       <p class="calc-pie">Es un ejemplo para hacer cuentas, no una promesa: los pedidos dependen de los clientes. «Te quedan» es antes de tus costes de cocina.</p>
@@ -406,7 +406,7 @@
       var v = val('ventas'), c = val('comision'), e = val('envios');
       var sobreEnvio = document.getElementById('sobreEnvio').checked;
       var ahora = (v + (sobreEnvio ? e : 0)) * c / 100;
-      var deevoro = v * 0.15;   // solo sobre la comida
+      var deevoro = v * 0.13;   // solo sobre la comida (212: 13 %)
       var dif = Math.round((ahora - deevoro) * 12);
       pon('ventasV', fmt.format(v) + ' €'); pon('comisionV', c + ' %'); pon('enviosV', fmt.format(e) + ' €');
       pon('ahora', fmt.format(Math.round(ahora)) + ' €');
@@ -421,7 +421,7 @@
       var ventas = n * t * 52 / 12;
       pon('nuevosV', String(n)); pon('ticketV', fmt.format(t) + ' €');
       pon('ventasNuevas', fmt.format(Math.round(ventas)) + ' €');
-      pon('teQuedan', fmt.format(Math.round(ventas * 0.85)) + ' €');
+      pon('teQuedan', fmt.format(Math.round(ventas * 0.87)) + ' €');
       pon('paraClub', fmt.format(Math.round(ventas * 0.10)) + ' €');
     }
     ['ventas', 'comision', 'envios', 'sobreEnvio'].forEach(function (id) {
