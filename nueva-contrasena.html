@@ -28,6 +28,9 @@
   .cf .boton { display:inline-block; margin-top:.4rem; background:var(--acento); color:#fff; text-decoration:none; border:0;
     font:inherit; font-weight:700; padding:.8rem 1.4rem; border-radius:.6rem; min-height:44px; cursor:pointer; }
   .cf .boton[disabled] { opacity:.6; cursor:default; }
+  .cf .tiendas { display:flex; flex-wrap:wrap; gap:.5rem; margin-top:.4rem; }
+  .cf .tiendas .boton { margin-top:0; display:inline-flex; align-items:center; justify-content:center; }
+  .cf .tiendas[hidden] { display:none; }
   .cf .boton:focus-visible, .cf input:focus-visible { outline:3px solid var(--tinta); outline-offset:2px; }
   .cf label { display:block; font-weight:700; font-size:.9rem; margin:1rem 0 .35rem; }
   .cf input { width:100%; box-sizing:border-box; font:inherit; font-size:1rem; padding:.75rem .85rem; border-radius:.55rem;
@@ -56,7 +59,10 @@
     <p class="icono" aria-hidden="true">✅</p>
     <h1 id="titulo-ok">¡Contraseña cambiada!</h1>
     <p>Ya puedes entrar en la app con tu email y tu contraseña nueva.</p>
-    <a class="boton" id="descargar" href="https://expo.dev/artifacts/eas/PHCxQHFZGVwIWUAGGRQ54otzoTwpuIA4IVvGmMPAgdc.apk" hidden>Descargar la app</a>
+    <div class="tiendas" id="descargar" hidden>
+      <a class="boton descargar" href="https://play.google.com/store/apps/details?id=com.deevoro.app">Android · Google Play</a>
+      <a class="boton descargar" href="https://apps.apple.com/es/app/deevoro/id6817024021">iPhone · App Store</a>
+    </div>
     <a class="boton" href="deevoro://">Abrir la app</a>
   </div>
   <div class="caja" id="caducado" hidden>

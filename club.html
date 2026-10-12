@@ -34,6 +34,9 @@
   .cf .boton { display:inline-block; margin-top:.4rem; background:var(--acento); color:#fff; text-decoration:none; border:0;
     font:inherit; font-weight:700; padding:.8rem 1.4rem; border-radius:.6rem; min-height:44px; cursor:pointer; }
   .cf .boton[disabled] { opacity:.6; cursor:default; }
+  .cf .tiendas { display:flex; flex-wrap:wrap; gap:.5rem; margin-top:.4rem; }
+  .cf .tiendas .boton { margin-top:0; display:inline-flex; align-items:center; justify-content:center; }
+  .cf .tiendas[hidden] { display:none; }
   .cf .boton:focus-visible, .cf input:focus-visible { outline:3px solid var(--tinta); outline-offset:2px; }
   .cf label { display:block; font-weight:700; font-size:.9rem; margin:1rem 0 .35rem; }
   .cf input { width:100%; box-sizing:border-box; font:inherit; font-size:1rem; padding:.75rem .85rem; border-radius:.55rem;
@@ -55,8 +58,11 @@
       style="width:72px;height:72px;object-fit:contain;border-radius:.6rem;margin:0 0 .9rem;background:#fff;border:1px solid var(--linea);">
     <h1 id="titulo">Apoya a tu club</h1>
     <p>Descarga Deevoro, pide en los bares y restaurantes de tu zona y el <strong>10% de cada pedido</strong> irá a <strong id="nombre1"></strong>. No te cuesta nada más.</p>
-    <a class="boton" id="descargar" href="https://expo.dev/artifacts/eas/PHCxQHFZGVwIWUAGGRQ54otzoTwpuIA4IVvGmMPAgdc.apk">Descargar Deevoro</a>
-    <p class="ayuda" style="margin-top:.8rem;">Son unos 50 MB: mejor con wifi. Si al abrirlo te dice «paquete no válido», espera a que termine la descarga y ábrelo desde <strong>Archivos → Descargas</strong>. Si tenías una versión antigua de Deevoro, desinstálala antes.</p>
+    <div class="tiendas">
+      <a class="boton descargar" href="https://play.google.com/store/apps/details?id=com.deevoro.app">Android · Google Play</a>
+      <a class="boton descargar" href="https://apps.apple.com/es/app/deevoro/id6817024021">iPhone · App Store</a>
+    </div>
+    <p class="ayuda" style="margin-top:.8rem;">¿Tenías en Android la versión de prueba de Deevoro? Desinstálala antes de descargarla de Google Play.</p>
     <p class="ayuda" style="margin-top:1rem;">¿Ya tienes la app? <a id="abrir" href="#">Ábrela y apoya a <span id="nombre2"></span></a>.</p>
     <p class="ayuda">Código del club: <strong id="codigo"></strong>. La app lo pondrá sola; si no, escríbelo al registrarte.</p>
   </div>
@@ -64,8 +70,11 @@
     <p class="icono" aria-hidden="true">🏅</p>
     <h1>Apoya a tu club con cada pedido</h1>
     <p id="motivo">Pide en los bares y restaurantes de tu zona y el 10% de cada pedido irá al club o asociación que elijas. No te cuesta más.</p>
-    <a class="boton" href="https://expo.dev/artifacts/eas/PHCxQHFZGVwIWUAGGRQ54otzoTwpuIA4IVvGmMPAgdc.apk">Descargar Deevoro</a>
-    <p class="ayuda" style="margin-top:.8rem;">Son unos 50 MB: mejor con wifi. Si al abrirlo te dice «paquete no válido», espera a que termine la descarga y ábrelo desde <strong>Archivos → Descargas</strong>. Si tenías una versión antigua de Deevoro, desinstálala antes.</p>
+    <div class="tiendas">
+      <a class="boton descargar" href="https://play.google.com/store/apps/details?id=com.deevoro.app">Android · Google Play</a>
+      <a class="boton descargar" href="https://apps.apple.com/es/app/deevoro/id6817024021">iPhone · App Store</a>
+    </div>
+    <p class="ayuda" style="margin-top:.8rem;">¿Tenías en Android la versión de prueba de Deevoro? Desinstálala antes de descargarla de Google Play.</p>
   </div>
   <p class="pie">¿Dudas? Escríbenos a <a href="mailto:soporte@deevoro.com">soporte@deevoro.com</a>.</p>
 </main>
@@ -109,8 +118,10 @@
     document.getElementById('abrir').href = 'deevoro://club/' + codigo;
     // Al descargar se deja el codigo en el portapapeles: es lo unico que
     // sobrevive a la instalacion, y la app lo recoge la primera vez.
-    document.getElementById('descargar').addEventListener('click', function () {
-      try { if (navigator.clipboard) navigator.clipboard.writeText('deevoro-club:' + codigo).catch(function () {}); } catch (e) { /* sin permiso: queda el codigo a la vista */ }
+    Array.prototype.forEach.call(document.querySelectorAll('#club .descargar'), function (b) {
+      b.addEventListener('click', function () {
+        try { if (navigator.clipboard) navigator.clipboard.writeText('deevoro-club:' + codigo).catch(function () {}); } catch (e) { /* sin permiso: queda el codigo a la vista */ }
+      });
     });
     ver('club');
   }).catch(function () { ver('generico'); });
