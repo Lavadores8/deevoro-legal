@@ -168,6 +168,7 @@
   .boton:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
   .contacto { display: flex; flex-wrap: wrap; gap: 10px 22px; font-weight: 700; }
   .contacto a { color: #fff; }
+  .cierre.arriba { margin: 0 0 28px; }
   .cierre .nota-app { font-size: .88rem; color: rgba(255,255,255,.85); }
 
   footer { margin-top: 40px; padding-top: 18px; border-top: 1px solid var(--line); font-size: .85rem; color: var(--faint); display: grid; gap: 4px; }
@@ -189,6 +190,22 @@
 </head>
 <body>
 <div class="hoja">
+
+  <!-- 13/10/2026: el QR de las tarjetas trae aquí; lo primero, cómo empezar. El mismo bloque se repite al final. -->
+  <div class="cierre arriba">
+    <h2 id="empezamos">¿Empezamos?</h2>
+    <p>Te damos de alta en 10 minutos y, si quieres, pasamos por tu local a dejarlo todo listo contigo.</p>
+    <div class="botones">
+      <a class="boton principal" href="./apuntate.html">Apúntate en 1 minuto</a>
+      <a class="boton sec" href="https://wa.me/34698141226?text=Hola%2C%20tengo%20un%20restaurante%20y%20quiero%20unirme%20a%20Deevoro">Escríbenos por WhatsApp</a>
+      <a class="boton sec" href="https://play.google.com/store/apps/details?id=com.deevoro.app">Descargar en Google Play</a>
+      <a class="boton sec" href="https://apps.apple.com/es/app/deevoro/id6817024021">Descargar en la App Store</a>
+    </div>
+    <div class="contacto">
+      <a href="mailto:soporte@deevoro.com?subject=Quiero%20unir%20mi%20restaurante%20a%20Deevoro">soporte@deevoro.com</a>
+      <a class="num" href="tel:+34698141226">+34 698 141 226</a>
+    </div>
+  </div>
 
   <header class="portada">
     <div class="portada-texto">
