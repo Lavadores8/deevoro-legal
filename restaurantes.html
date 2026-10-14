@@ -384,12 +384,12 @@
       <h2>Dudas</h2>
     </div>
     <div class="dudas">
-      <details><summary>¿Necesito repartidores?</summary><p>No. Puedes vender solo para recoger. El domicilio es para quien ya tiene su propio reparto.</p></details>
-      <details><summary>¿Puedo poner los precios más altos que en el local?</summary><p>No, y es a propósito: en Deevoro tus precios no pueden superar a los de tu propio local. El 10% del club sale de la comisión, no de cobrarle más al cliente. Sí puedes tener otros precios en otras plataformas y hacer promociones en tu local.</p></details>
-      <details><summary>¿Cuándo cobro?</summary><p>Cuando aceptas el pedido. Hasta entonces el importe solo queda retenido en la tarjeta del cliente; al aceptarlo se cobra y tu parte pasa a tu cuenta de Stripe, que la ingresa en tu banco automáticamente según su calendario de pagos. Si no lo aceptas en 6 minutos, se anula y no se cobra nada. No hay que esperar a fin de mes ni reclamar nada.</p></details>
-      <details><summary>¿Me ata a algo?</summary><p>No. Sin cuota y sin permanencia: te das de baja cuando quieras desde la app.</p></details>
-      <details><summary>¿Qué móvil necesito?</summary><p>Un Android o un iPhone con la app de Deevoro, que está en Google Play y en la App Store.</p></details>
-      <details><summary>¿Y si ya estoy en otras apps?</summary><p>Puedes seguir en ellas. Deevoro no pide exclusividad.</p></details>
+      <details><summary data-medir="duda-repartidores">¿Necesito repartidores?</summary><p>No. Puedes vender solo para recoger. El domicilio es para quien ya tiene su propio reparto.</p></details>
+      <details><summary data-medir="duda-precios">¿Puedo poner los precios más altos que en el local?</summary><p>No, y es a propósito: en Deevoro tus precios no pueden superar a los de tu propio local. El 10% del club sale de la comisión, no de cobrarle más al cliente. Sí puedes tener otros precios en otras plataformas y hacer promociones en tu local.</p></details>
+      <details><summary data-medir="duda-cobro">¿Cuándo cobro?</summary><p>Cuando aceptas el pedido. Hasta entonces el importe solo queda retenido en la tarjeta del cliente; al aceptarlo se cobra y tu parte pasa a tu cuenta de Stripe, que la ingresa en tu banco automáticamente según su calendario de pagos. Si no lo aceptas en 6 minutos, se anula y no se cobra nada. No hay que esperar a fin de mes ni reclamar nada.</p></details>
+      <details><summary data-medir="duda-permanencia">¿Me ata a algo?</summary><p>No. Sin cuota y sin permanencia: te das de baja cuando quieras desde la app.</p></details>
+      <details><summary data-medir="duda-movil">¿Qué móvil necesito?</summary><p>Un Android o un iPhone con la app de Deevoro, que está en Google Play y en la App Store.</p></details>
+      <details><summary data-medir="duda-otras-apps">¿Y si ya estoy en otras apps?</summary><p>Puedes seguir en ellas. Deevoro no pide exclusividad.</p></details>
     </div>
   </section>
 
@@ -448,6 +448,98 @@
     ['nuevosN', 'ticket'].forEach(function (id) { document.getElementById(id).addEventListener('input', nuevos); });
     comparar(); nuevos();
   })();
+</script>
+<!-- 14/10/2026: contador de visitas y clics, sin cookies (migración 220) -->
+<script>
+(function () {
+  var RPC = "https://xkerdlmsrdqoozbzvxps.supabase.co/rest/v1/rpc/web_evento", CLAVE = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhrZXJkbG1zcmRxb296Ynp2eHBzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIyMTUyMjEsImV4cCI6MjA5Nzc5MTIyMX0.sCYaUXoBm6UOX6kcCc1jjTZP_4xNst62O681UF1eyLU", PAGINA = "restaurantes";
+  var visita = (Math.random().toString(36).slice(2, 12) + Date.now().toString(36)).replace(/[^a-z0-9]/g, '').slice(0, 24);
+  var ua = navigator.userAgent || '';
+  var movil = /Mobi|Android|iPhone|iPad/i.test(ua);
+  var enviados = {};
+  // Todo menos los clics se manda una vez por visita (el servidor tambien lo controla).
+  function enviar(evento, detalle, origen) {
+    var clave = evento + ':' + (detalle || '');
+    if (evento !== 'clic') { if (enviados[clave]) return; enviados[clave] = 1; }
+    try {
+      fetch(RPC, {
+        method: 'POST', keepalive: true, credentials: 'omit',
+        headers: { apikey: CLAVE, Authorization: 'Bearer ' + CLAVE, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ p_pagina: PAGINA, p_evento: evento, p_visita: visita, p_detalle: detalle || null, p_origen: origen || null, p_movil: movil }),
+      }).catch(function () {});
+    } catch (e) { /* navegador viejo o sin red: no se cuenta y ya */ }
+  }
+  window.deevoroMedir = enviar;
+
+  // De donde viene: el utm del enlace si lo trae; si no, el navegador de
+  // Instagram o Facebook (los anuncios se abren dentro de la app) o la web anterior.
+  function origen() {
+    try {
+      var q = new URLSearchParams(location.search);
+      var fuente = (q.get('utm_source') || '').toLowerCase(), medio = (q.get('utm_medium') || '').toLowerCase();
+      if (fuente) return (fuente + (medio ? ':' + medio : '')).replace(/[^a-z0-9._:-]/g, '').slice(0, 40);
+      if (/Instagram/i.test(ua)) return 'instagram';
+      if (/FBAN|FBAV|FB_IAB/i.test(ua)) return 'facebook';
+      if (q.has('fbclid')) return 'meta';
+      var ref = document.referrer ? new URL(document.referrer).hostname.toLowerCase() : '';
+      if (!ref) return 'directo';
+      if (/(^|\.)deevoro\.com$/.test(ref)) return 'deevoro';
+      if (/instagram/.test(ref)) return 'instagram';
+      if (/facebook|fb\.com/.test(ref)) return 'facebook';
+      if (/google\./.test(ref)) return 'google';
+      if (/whatsapp/.test(ref)) return 'whatsapp';
+      return ref.replace(/^www\./, '').replace(/[^a-z0-9._-]/g, '').slice(0, 40);
+    } catch (e) { return ''; }
+  }
+  enviar('visita', null, origen());
+
+  // Botones y enlaces: por lo que hacen, y si estan en el bloque de arriba o en el de abajo.
+  function nombre(el) {
+    if (el.getAttribute('data-medir')) return el.getAttribute('data-medir');
+    var h = el.getAttribute('href') || '';
+    var n = /apuntate/.test(h) ? 'apuntate' : /wa\.me/.test(h) ? 'whatsapp' : /play\.google/.test(h) ? 'google-play'
+      : /apps\.apple/.test(h) ? 'app-store' : /^mailto:/.test(h) ? 'correo' : /^tel:/.test(h) ? 'telefono'
+      : /condiciones/.test(h) ? 'condiciones' : /privacidad/.test(h) ? 'privacidad' : /restaurantes/.test(h) ? 'restaurantes'
+      : h.charAt(0) === '#' ? 'indice:' + h.slice(1) : 'otro';
+    var donde = el.closest('.cierre.arriba') ? '-arriba' : el.closest('.cierre') ? '-abajo' : '';
+    return (n + donde).toLowerCase().replace(/[^a-z0-9:_-]/g, '').slice(0, 40);
+  }
+  document.addEventListener('click', function (ev) {
+    try {
+      var el = ev.target && ev.target.closest && ev.target.closest('a[href], summary');
+      if (!el) return;
+      if (el.tagName === 'SUMMARY' && el.parentElement && el.parentElement.open) return;   // las dudas, al abrirlas
+      enviar('clic', nombre(el));
+    } catch (e) {}
+  }, true);
+
+  // Hasta donde baja: cuenta una seccion cuando su principio entra en la parte de arriba de la pantalla.
+  if (PAGINA === 'restaurantes' && 'IntersectionObserver' in window) {
+    try {
+      var obs = new IntersectionObserver(function (entradas) {
+        entradas.forEach(function (en) {
+          if (!en.isIntersecting) return;
+          enviar('seccion', en.target.id || 'final');
+          obs.unobserve(en.target);
+        });
+      }, { rootMargin: '0px 0px -40% 0px' });
+      Array.prototype.forEach.call(document.querySelectorAll('section[id], .cierre:not(.arriba)'), function (s) { obs.observe(s); });
+      document.addEventListener('input', function (ev) {
+        var s = ev.target && ev.target.closest && ev.target.closest('section[id]');
+        if (s) enviar('calculadora', s.id);
+      }, true);
+    } catch (e) {}
+  }
+
+  // Cuanto se queda: hasta la primera vez que sale de la pagina.
+  var inicio = Date.now();
+  function salir() {
+    var s = (Date.now() - inicio) / 1000;
+    enviar('salida', s < 10 ? 'menos-10s' : s < 30 ? '10-30s' : s < 60 ? '30-60s' : s < 180 ? '1-3min' : 'mas-3min');
+  }
+  document.addEventListener('visibilitychange', function () { if (document.visibilityState === 'hidden') salir(); });
+  window.addEventListener('pagehide', salir);
+})();
 </script>
 </body>
 </html>
