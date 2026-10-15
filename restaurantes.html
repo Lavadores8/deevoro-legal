@@ -531,9 +531,11 @@
     } catch (e) {}
   }
 
-  // Cuanto se queda: hasta la primera vez que sale de la pagina.
-  var inicio = Date.now();
+  // Cuanto se queda: hasta la primera vez que sale de la pagina (una sola vez).
+  var inicio = Date.now(), salido = false;
   function salir() {
+    if (salido) return;
+    salido = true;
     var s = (Date.now() - inicio) / 1000;
     enviar('salida', s < 10 ? 'menos-10s' : s < 30 ? '10-30s' : s < 60 ? '30-60s' : s < 180 ? '1-3min' : 'mas-3min');
   }
