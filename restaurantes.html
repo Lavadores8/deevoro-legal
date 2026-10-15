@@ -131,7 +131,7 @@
           <input id="telefono" name="telefono" type="tel" maxlength="16" autocomplete="tel" inputmode="tel" placeholder="600 000 000" required></div>
         <div class="trampa" aria-hidden="true"><label for="web">Web</label><input id="web" type="text" tabindex="-1" autocomplete="off"></div>
         <label class="casilla"><input type="checkbox" id="acepta"><span>He leído la <a href="./privacidad.html" target="_blank" rel="noopener">política de privacidad</a> y acepto que Deevoro use estos datos para contactarme y dar de alta mi local.</span></label>
-        <button class="enviar" type="submit" id="enviar">Contactar conmigo</button>
+        <button class="enviar" type="submit" id="enviar">Contáctame</button>
         <p class="estado" id="estado" role="status" aria-live="polite"></p>
         <p class="legal">Responsable: Plataforma de apoyo al deporte Bade S.L. Finalidad: contactarte y preparar el alta de tu local, a petición tuya. Puedes ejercer tus derechos de acceso, rectificación y supresión escribiendo a soporte@deevoro.com.</p>
       </form>
@@ -219,7 +219,7 @@
       })
       .catch(function (e) {
         aviso(e && e.message && e.message !== 'Failed to fetch' ? e.message : 'No hay conexión. Comprueba tu internet e inténtalo de nuevo.');
-        boton.disabled = false; boton.textContent = 'Contactar conmigo';
+        boton.disabled = false; boton.textContent = 'Contáctame';
       });
   });
 })();
