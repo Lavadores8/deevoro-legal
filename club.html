@@ -127,5 +127,33 @@
   }).catch(function () { ver('generico'); });
 })();
 </script>
+<script>
+(function () {
+  var ua = navigator.userAgent || '';
+  var android = /Android/i.test(ua);
+  var ios = /iPhone|iPad|iPod/i.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  var botones = document.querySelectorAll('[data-abrir-app]');
+  for (var i = 0; i < botones.length; i++) (function (a) {
+    var ayuda = a.parentNode.querySelector('[data-abrir-ayuda]');
+    if (!android && !ios) {
+      a.hidden = true;
+      if (ayuda) { ayuda.textContent = 'Abre la app de Deevoro en tu móvil y entra con tu email y tu contraseña.'; ayuda.hidden = false; }
+      return;
+    }
+    if (android) a.href = 'intent://abrir#Intent;scheme=' + "deevoro" + ';package=' + "com.deevoro.app"
+      + ';S.browser_fallback_url=' + encodeURIComponent("https://play.google.com/store/apps/details?id=com.deevoro.app") + ';end';
+    a.addEventListener('click', function () {
+      var t = setTimeout(function () {
+        if (!ayuda || document.hidden) return;
+        // En iPhone sin la app instalada no hay forma de saberlo desde la web: se ofrece la descarga.
+        if (ios) ayuda.innerHTML = '¿No se abre? Si ya tienes Deevoro, ábrela desde la pantalla de inicio y entra con tu email y tu contraseña. '
+          + 'Si aún no la tienes, <a href="' + "https://apps.apple.com/es/app/deevoro/id6817024021" + '">descárgala en el App Store</a>.';
+        ayuda.hidden = false;
+      }, 1600);
+      document.addEventListener('visibilitychange', function () { if (document.hidden) clearTimeout(t); });
+    });
+  })(botones[i]);
+})();
+</script>
 </body>
 </html>
