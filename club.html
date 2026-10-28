@@ -10,7 +10,7 @@
 <meta name="theme-color" content="#e22d28">
 <meta property="og:site_name" content="Deevoro">
 <meta property="og:title" content="🏅 Te invitan a apoyar a tu club">
-<meta property="og:description" content="Descarga Deevoro y pide en los bares y restaurantes de tu zona: el 10% de cada pedido va a tu club o asociación. No te cuesta nada más.">
+<meta property="og:description" content="Descarga Deevoro y pide en los bares y restaurantes de tu zona: hasta el 10% de cada pedido va a tu club o asociación. No te cuesta nada más.">
 <meta property="og:image" content="https://legal.deevoro.com/icono.png">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary">
@@ -57,7 +57,7 @@
     <img id="escudo" alt="" hidden referrerpolicy="no-referrer"
       style="width:72px;height:72px;object-fit:contain;border-radius:.6rem;margin:0 0 .9rem;background:#fff;border:1px solid var(--linea);">
     <h1 id="titulo">Apoya a tu club</h1>
-    <p>Descarga Deevoro, pide en los bares y restaurantes de tu zona y el <strong>10% de cada pedido</strong> irá a <strong id="nombre1"></strong>. No te cuesta nada más.</p>
+    <p>Descarga Deevoro, pide en los bares y restaurantes de tu zona y el <strong><span id="pct">10%</span> de cada pedido</strong> irá a <strong id="nombre1"></strong>. No te cuesta nada más.</p>
     <div class="tiendas">
       <a class="boton descargar" href="https://play.google.com/store/apps/details?id=com.deevoro.app">Android · Google Play</a>
       <a class="boton descargar" href="https://apps.apple.com/es/app/deevoro/id6817024021">iPhone · App Store</a>
@@ -69,7 +69,7 @@
   <div class="caja" id="generico" hidden>
     <p class="icono" aria-hidden="true">🏅</p>
     <h1>Apoya a tu club con cada pedido</h1>
-    <p id="motivo">Pide en los bares y restaurantes de tu zona y el 10% de cada pedido irá al club o asociación que elijas. No te cuesta más.</p>
+    <p id="motivo">Pide en los bares y restaurantes de tu zona y hasta el 10% de cada pedido irá al club o asociación que elijas. No te cuesta más.</p>
     <div class="tiendas">
       <a class="boton descargar" href="https://play.google.com/store/apps/details?id=com.deevoro.app">Android · Google Play</a>
       <a class="boton descargar" href="https://apps.apple.com/es/app/deevoro/id6817024021">iPhone · App Store</a>
@@ -109,6 +109,9 @@
     document.getElementById('titulo').textContent = 'Apoya a ' + club.nombre;
     document.getElementById('nombre1').textContent = club.nombre;
     document.getElementById('nombre2').textContent = club.nombre;
+    // 231: el porcentaje de ESTE club (10 % las de antes del 28/10/2026, 8,26 % las nuevas).
+    var pct = Number(club.aportacion_pct);
+    if (pct > 0) document.getElementById('pct').textContent = String(Math.round(pct * 100) / 100).replace('.', ',') + '%';
     document.getElementById('codigo').textContent = codigo;
     document.title = 'Apoya a ' + club.nombre + ' · Deevoro';
     if (club.logo_url && /^https:\/\//.test(club.logo_url)) {
