@@ -16,8 +16,10 @@
     font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
     font-size:1rem; line-height:1.65; -webkit-text-size-adjust:100%; }
   .dv * { box-sizing:border-box; }
-  .dv .marca { font-weight:800; letter-spacing:.06em; color:var(--acento); font-size:.8rem;
-    text-transform:uppercase; margin:0 0 .75rem; }
+  /* 5/11/2026: Adrián: «sube el logo en la página de deevoro, y que ponga debajo del logo Deevoro app». */
+  .dv .logo { display:inline-flex; flex-direction:column; align-items:center; gap:.45rem; margin:0 0 1.6rem; text-decoration:none; }
+  .dv .logo img { width:84px; height:84px; border-radius:20px; display:block; box-shadow:0 6px 18px rgba(226,45,40,.22); }
+  .dv .logo span { font-weight:800; font-size:1.05rem; letter-spacing:.01em; color:var(--tinta); }
   .dv h1 { font-size:clamp(1.9rem,5.5vw,2.7rem); line-height:1.12; margin:0 0 1rem; font-weight:800;
     letter-spacing:-.02em; text-wrap:balance; }
   .dv .entrada { font-size:1.1rem; color:var(--suave); margin:0 0 2.5rem; max-width:34rem; }
@@ -42,7 +44,7 @@
   }
 </style>
 <main class="dv">
-  <p class="marca">Deevoro</p>
+  <div class="logo"><img src="./icono.png" alt="Logo de Deevoro" width="84" height="84"><span>Deevoro app</span></div>
   <h1>Pide en tu barrio y tu club o asociación se lleva hasta el 10%</h1>
   <p class="entrada">Deevoro es una aplicación móvil para pedir comida a bares y restaurantes
     de tu zona, a domicilio o para recoger. Por cada pedido, hasta el 10% del importe de la comida va
