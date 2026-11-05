@@ -111,6 +111,9 @@
   <form id="form" novalidate>
     <fieldset>
       <legend>Tu contacto</legend>
+      <!-- 5/11/2026: sin el nombre del restaurante no se puede enviar (también lo exige el servidor). -->
+      <div class="campo"><label for="nombre">Nombre del restaurante</label>
+        <input id="nombre" name="nombre" type="text" maxlength="120" autocomplete="organization" placeholder="Ej.: Pulpería O Porto" required></div>
       <div class="campo"><label for="contacto">Tu nombre</label>
         <input id="contacto" name="contacto" type="text" maxlength="80" autocomplete="name" placeholder="Nombre y apellido" required></div>
       <div class="campo"><label for="email">Email</label>
@@ -156,6 +159,7 @@
 
   function comprobar() {
     var errores = [
+      ['nombre', val('nombre').length < 2, 'Falta el nombre del restaurante.'],
       ['contacto', val('contacto').length < 2, 'Falta tu nombre.'],
       ['email', !/^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/.test(val('email')), 'Revisa el email.'],
       ['telefono', !/^[6789]\d{8}$/.test(val('telefono').replace(/^\+34/, '')), 'Revisa el teléfono.'],
@@ -172,7 +176,7 @@
     var fallo = comprobar();
     if (fallo) { aviso(fallo); return; }
     var datos = {
-      contacto: val('contacto'), email: val('email'), telefono: val('telefono'),
+      nombre: val('nombre'), contacto: val('contacto'), email: val('email'), telefono: val('telefono'),
       acepta: $('acepta').checked, web: $('web').value,
     };
     var boton = $('enviar'); boton.disabled = true; boton.textContent = 'Enviando…'; aviso('');

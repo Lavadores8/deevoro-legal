@@ -122,6 +122,9 @@
       <p>Déjanos tu contacto y te llamamos: te montamos el local y la carta, y empiezas a vender en menos de 10 minutos.</p>
 
       <form id="form" novalidate>
+        <!-- 5/11/2026: sin el nombre del restaurante no se puede enviar (también lo exige el servidor). -->
+        <div class="campo"><label for="nombre">Nombre del restaurante</label>
+          <input id="nombre" name="nombre" type="text" maxlength="120" autocomplete="organization" placeholder="Ej.: Pulpería O Porto" required></div>
         <div class="campo"><label for="contacto">Tu nombre</label>
           <input id="contacto" name="contacto" type="text" maxlength="80" autocomplete="name" placeholder="Nombre y apellido" required></div>
         <div class="campo"><label for="email">Email</label>
@@ -151,7 +154,7 @@
       <ul class="ventajas">
         <li><b>13 % + IVA, solo sobre la comida</b><span>Sin comisión sobre el envío ni sobre nada más.</span></li>
         <li><b>El envío, entero para ti</b><span>Si repartes tú, lo fijas tú y te lo quedas íntegro.</span></li>
-        <li><b>¿Sin repartidores? Te los ponemos</b><span>Con una empresa de reparto. En esos pedidos a domicilio, la comisión es del 30 % + IVA y el envío es para Deevoro.</span></li>
+        <li><b>¿Sin repartidores? Te los ponemos</b><span>Con una empresa de reparto. Las condiciones de esos pedidos a domicilio las negociamos con cada restaurante.</span></li>
         <li><b>Sin cuotas ni permanencia</b><span>No pagas nada por estar. Te das de baja cuando quieras.</span></li>
         <li><b>Cobras al aceptar cada pedido</b><span>Tu parte pasa a tu cuenta de cobro en ese momento, sin esperar a fin de mes.</span></li>
         <li><b>Clientes nuevos del barrio</b><span>Hasta el 10 % de la comida de cada pedido va al club o asociación que elige el cliente: un motivo más para que el barrio te pida a ti.</span></li>
@@ -191,6 +194,7 @@
 
   function comprobar() {
     var errores = [
+      ['nombre', val('nombre').length < 2, 'Falta el nombre del restaurante.'],
       ['contacto', val('contacto').length < 2, 'Falta tu nombre.'],
       ['email', !/^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/.test(val('email')), 'Revisa el email.'],
       ['telefono', !/^[6789]\d{8}$/.test(val('telefono').replace(/^\+34/, '')), 'Revisa el teléfono.'],
@@ -206,7 +210,7 @@
     ev.preventDefault();
     var fallo = comprobar();
     if (fallo) { aviso(fallo); return; }
-    var datos = { contacto: val('contacto'), email: val('email'), telefono: val('telefono'), acepta: $('acepta').checked, web: $('web').value };
+    var datos = { nombre: val('nombre'), contacto: val('contacto'), email: val('email'), telefono: val('telefono'), acepta: $('acepta').checked, web: $('web').value };
     var boton = $('enviar'); boton.disabled = true; boton.textContent = 'Enviando…'; aviso('');
     fetch(FUNCION, { method: 'POST', headers: { 'Content-Type': 'application/json', apikey: ANON, Authorization: 'Bearer ' + ANON }, body: JSON.stringify(datos) })
       .then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) { return { ok: r.ok && j.ok, j: j }; }); })
@@ -214,7 +218,7 @@
         if (!res.ok) throw new Error(res.j.error || 'No se ha podido enviar. Inténtalo de nuevo.');
         $('form').hidden = true;
         $('hechoT').textContent = '¡Recibido, ' + datos.contacto.split(' ')[0] + '!';
-        $('hechoP').textContent = 'Te llamamos muy pronto al ' + datos.telefono + ' para montarte el local.';
+        $('hechoP').textContent = 'Te llamamos muy pronto al ' + datos.telefono + ' para montar ' + datos.nombre + ' en Deevoro.';
         $('hecho').hidden = false; $('hecho').focus();
         if (window.deevoroMedir) window.deevoroMedir('envio');   // 220: para contar cuántos lo envían
       })
